@@ -1,0 +1,15 @@
+current directory: /Users/urayoshie/Desktop/Ushibudou/ushibudou_reservation_system/vendor/bundle/ruby/2.7.0/gems/bindex-0.8.1/ext/skiptrace
+/Users/urayoshie/.rbenv/versions/2.7.2/bin/ruby -I /Users/urayoshie/.rbenv/versions/2.7.2/lib/ruby/2.7.0 -r ./siteconf20210407-58498-xut52j.rb extconf.rb
+creating Makefile
+
+current directory: /Users/urayoshie/Desktop/Ushibudou/ushibudou_reservation_system/vendor/bundle/ruby/2.7.0/gems/bindex-0.8.1/ext/skiptrace
+make "DESTDIR=" clean
+
+current directory: /Users/urayoshie/Desktop/Ushibudou/ushibudou_reservation_system/vendor/bundle/ruby/2.7.0/gems/bindex-0.8.1/ext/skiptrace
+make "DESTDIR="
+compiling cruby.c
+linking shared-object skiptrace/internal/cruby.bundle
+
+current directory: /Users/urayoshie/Desktop/Ushibudou/ushibudou_reservation_system/vendor/bundle/ruby/2.7.0/gems/bindex-0.8.1/ext/skiptrace
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 cruby.bundle ./.gem.20210407-58498-1w0g2q1/skiptrace/internal
