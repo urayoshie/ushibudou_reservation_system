@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_04_07_030349) do
     t.string "name", null: false
     t.string "email", null: false
     t.string "phone_number", null: false
+    t.boolean "private_reservation", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

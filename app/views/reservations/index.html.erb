@@ -1,9 +1,9 @@
 <div class="container">
   <h2>ご予約条件を入力してください :  </h2>
   <label>予約人数</label>
-  <select name="pull-down" id="num_box">
+  <select name="pull-down" id="num-box">
     <option value="1">1名</option>
-    <option value="2">2名</option>
+    <option value="2" selected>2名</option>
     <option value="3">3名</option>
     <option value="4">4名</option>
     <option value="5">5名</option>
@@ -15,19 +15,21 @@
     <option value="11">11名</option>
     <option value="12">12名</option>
   </select>
-  <label>予約日</label>
-  <input type="text" id="flatpickr" data-arr='["2021-04-14","2021-04-24"]'>
-  <label>予約時間</label>
-  <select name="pull-down">
-    <option value="1">15:00</option>
-    <option value="2">16:00</option>
-    <option value="3">17:00</option>
-    <option value="4">18:00</option>
-    <option value="5">19:00</option>
-    <option value="6">20:00</option>
+  <form action="cgi-bin/abc.cgi" method="post">
+    <p><input type="checkbox" name="private" value="1" checked="checked">貸切</p>
+    <label>予約日</label>
+    <input type="text" id="flatpickr" data-arr='["2021-04-14","2021-04-24"]'>
+    <label>予約時間</label>
+    <select name="pull-down" id="time-box">
+      <%# <option value="1">15:00 ○</option>
+    <option value="2">16:00 ○</option>
+    <option value="3">17:00 ○</option>
+    <option value="4">18:00 ×</option>
+    <option value="5">19:00 ×</option>
+    <option value="6">20:00 ×</option>
     <option value="7">21:00</option>
     <option value="8">22:00</option>
     <option value="9">23:00</option>
-    <option value="10">24:00</option>
-  </select>
-</div>
+    <option value="10">24:00</option> %>
+    </select>
+  </div>
