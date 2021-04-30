@@ -6,6 +6,7 @@ class CreateReservations < ActiveRecord::Migration[6.1]
       t.string :name, null: false
       t.string :email, null: false
       t.string :phone_number, null: false
+      t.boolean :private_reservation, null: false, default: false
 
       t.timestamps
     end

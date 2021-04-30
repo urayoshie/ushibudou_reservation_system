@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_07_030349) do
+ActiveRecord::Schema.define(version: 2021_04_30_061342) do
 
   create_table "reservations", charset: "utf8mb4", force: :cascade do |t|
     t.integer "guest_number", null: false
