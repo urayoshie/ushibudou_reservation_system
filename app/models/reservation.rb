@@ -8,6 +8,7 @@ class Reservation < ApplicationRecord
   WHOLEDAY_COUNT = (END_TIME - START_TIME) * (60 / TERM)
   TILL_LASTORSER_COUNT = (LASTORDER_TIME - START_TIME) * (60 / TERM) + 1
   MAXIMUM_GUEST_NUMBER = 12
+  ACCEPTABLE_PRIVATE_NUMBER = 6
 
   validates :guest_number, :started_at, presence: true
   validates :name, presence: true, length: { maximum: 50 }
@@ -17,7 +18,7 @@ class Reservation < ApplicationRecord
   # started_at は 15時〜23時、15分ごと以外はいらない様にバリデーションを入れる
   # validates
 
-  # 予約人数と貸切予約かどうかの1日単位(15:00~25:00)の配列ハッシュデータ
+  # 予約人数と貸切予約かどうかの1日単位(15:00~24:45)の配列ハッシュデータ
   def self.reserve_list(date)
     # beginning_of_day = date.beginning_of_day
     # end_of_day = date.end_of_day
@@ -43,16 +44,20 @@ class Reservation < ApplicationRecord
     reservation_list = []
     WHOLEDAY_COUNT.times do
       reservation_list << { total_number: 0, private_reservation: false }
-      # binding.pry
     end
 
     where(started_at: beginning_of_day..end_of_day).each do |reservation|
       start_index = (reservation.started_at - beginning_of_day).floor / 60 / TERM
       8.times do |i|
         reservation_list[start_index + i][:total_number] += reservation.guest_number
-        if reservation.private_reservation
+        if reservation.guest_number >= ACCEPTABLE_PRIVATE_NUMBER
           reservation_list[start_index + i][:private_reservation] = true
         end
+
+        # reservation_list[start_index + i][:total_number] += reservation.guest_number
+        # if reservation.private_reservation
+        #   reservation_list[start_index + i][:private_reservation] = true
+        # end
       end
     end
     # list = total_numbers.map.with_index do |total_number, i|
@@ -133,11 +138,19 @@ class Reservation < ApplicationRecord
       # else
       #   reservable_private_reservation << false
       # end
-      reservable_private_reservation << data[:reservable_number] == MAXIMUM_GUEST_NUMBER
+      reservable_private_reservation << (data[:reservable_number] == MAXIMUM_GUEST_NUMBER)
       # reservable_private_reservation << data[:reservable_number] == 12 && !data[:private_reservation_exists]
-      binding.pry
     end
     reservable_private_reservation
+  end
+
+  def self.reservable_list(date, guest_number)
+    # 6人以上なら貸切用のメソッド, 6人未満なら人数用のメソッド
+    if guest_number > 6
+      choose_private_reservation(date)
+    else
+      display_available_time(date, guest_number)
+    end
   end
 
   # 1日単位で1コマ(例えば15::00からの8コマ2時間)でも予約可能な場合はtrue,一つも空きが無い場合はfalseを返す。self.show_string_date(guest_number)のif文に移動。
