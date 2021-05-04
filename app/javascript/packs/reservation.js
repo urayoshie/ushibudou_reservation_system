@@ -20,17 +20,25 @@ document.addEventListener("turbolinks:load", () => {
   let fp = flatpickr("#flatpickr", config);
 
   const insertAvailableTime = (availableTime) => {
+    // 現在選択している時間 (time) を取得
+    const time = timeBox.value
     let str = "";
     if (availableTime.length > 0) {
       str += "<option disabled selected value> -- 選択して下さい -- </option>";
-    }
-    for (let list of availableTime) {
-      str += `<option>${list}</option>`;
+      for (let list of availableTime) {
+        str += `<option>${list}</option>`;
+      }
     }
     timeBox.innerHTML = str;
+    // 選択していた時間 (time) が availableTime に含まれるときは選択済みにする
+    const index = availableTime.indexOf(time)
+    if (index >= 0) {
+      timeBox.selectedIndex = index + 1
+      debugger;
+    }
   };
 
-  const changeAvaliableDates = () => {
+  const changeAvailableDates = () => {
     const guestNumber = numBox.value;
     const date = calendar.value;
     fetch(
@@ -61,7 +69,7 @@ document.addEventListener("turbolinks:load", () => {
       });
   };
 
-  const changeAvaliableTime = () => {
+  const changeAvailableTime = () => {
     const guestNumber = numBox.value;
     const date = calendar.value;
     fetch(
@@ -103,7 +111,7 @@ document.addEventListener("turbolinks:load", () => {
   // };
 
   // 初期表示時カレンダーの選択できる日付を取得
-  changeAvaliableDates();
+  changeAvailableDates();
 
   // 貸切予約の初期設定で6人以上の場合はチェックボックスに事前にチェックが入る為のデータ取得
   // changeDisabled(numBox.value,,checkBox.checked);
@@ -117,7 +125,7 @@ document.addEventListener("turbolinks:load", () => {
     //   checkBox.setAttribute("disabled", "disabled");
     //   checkBox.removeAttribute("checked");
     // }
-    changeAvaliableDates();
+    changeAvailableDates();
   });
 
   // checkBox.addEventListener("change", () => {
@@ -125,5 +133,5 @@ document.addEventListener("turbolinks:load", () => {
   //   }
   // });
 
-  calendar.addEventListener("change", changeAvaliableTime);
+  calendar.addEventListener("change", changeAvailableTime);
 });
