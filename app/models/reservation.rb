@@ -146,7 +146,7 @@ class Reservation < ApplicationRecord
 
   def self.reservable_list(date, guest_number)
     # 6人以上なら貸切用のメソッド, 6人未満なら人数用のメソッド
-    if guest_number > 6
+    if guest_number >= 6
       choose_private_reservation(date)
     else
       display_available_time(date, guest_number)
@@ -168,9 +168,11 @@ class Reservation < ApplicationRecord
 
     # display_available_time(date, guest_number).any?
     Date.current.upto(Date.current + 3.months) do |date|
-      if (reserved_date_list.exclude?(date) || display_available_time(date, guest_number).any?) && date.wday != 2
+      # 火曜日は予約できないので含めない
+      next if date.wday == 2
+      # 予約がない日、または、予約はあるが予約できる日
+      if reserved_date_list.exclude?(date) || reservable_list(date, guest_number).any?
         available_date_list << date.strftime
-        # binding.pry
       end
     end
     available_date_list

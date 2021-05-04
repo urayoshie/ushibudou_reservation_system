@@ -7,6 +7,7 @@ require("flatpickr/dist/themes/material_orange.css");
 document.addEventListener("turbolinks:load", () => {
   const calendar = document.getElementById("flatpickr");
   const numBox = document.getElementById("num-box");
+  const timeBox = document.getElementById("time-box");
   // const checkBox = document.getElementById("check");
   const minimumPrivateNumber = 6;
 
@@ -18,28 +19,65 @@ document.addEventListener("turbolinks:load", () => {
 
   let fp = flatpickr("#flatpickr", config);
 
-  const changeAvaliableDates = (guestNumber) => {
-    fetch(`/reservations/available_dates?guest_number=${guestNumber}`)
+  const insertAvailableTime = (availableTime) => {
+    let str = "";
+    if (availableTime.length > 0) {
+      str += "<option disabled selected value> -- 選択して下さい -- </option>";
+    }
+    for (let list of availableTime) {
+      str += `<option>${list}</option>`;
+    }
+    timeBox.innerHTML = str;
+  };
+
+  const changeAvaliableDates = () => {
+    const guestNumber = numBox.value;
+    const date = calendar.value;
+    fetch(
+      `/reservations/available_dates?guest_number=${guestNumber}&date=${date}`
+    )
       .then((response) => response.json())
       .then((data) => {
+        // カレンダーの選択できる日付を更新
         config.enable = data.availableDates;
         fp = flatpickr("#flatpickr", config);
-        fp.open();
+        // 予約時間の更新
+        insertAvailableTime(data.availableTime);
+        if (data.availableTime.length === 0) {
+          //  予約日を選択していない、または、選択した日付が予約できないとき
+
+          // カレンダーの日付選択を取り消す
+          calendar.value = "";
+          // カレンダーを開く
+          fp.open();
+        } else {
+          // const timeBox = document.getElementById("time-box");
+          // let str = "";
+          // for (let list of data.availableTime) {
+          //   str += `<option>${list}</option>`;
+          // }
+          // timeBox.innerHTML = str;
+        }
       });
   };
 
-  const changeAvaliableTime = (guestNumber, date) => {
+  const changeAvaliableTime = () => {
+    const guestNumber = numBox.value;
+    const date = calendar.value;
     fetch(
       `/reservations/available_time?guest_number=${guestNumber}&date=${date}`
     )
       .then((response) => response.json())
       .then((data) => {
-        const timeBox = document.getElementById("time-box");
-        let str = "";
-        for (let list of data.availableTime) {
-          str += `<option>${list}</option>`;
-        }
-        timeBox.innerHTML = str;
+        insertAvailableTime(data.availableTime);
+
+        // const timeBox = document.getElementById("time-box");
+        // let str = "";
+        // for (let list of data.availableTime) {
+        //   str += `<option>${list}</option>`;
+        // }
+        // timeBox.innerHTML = str;
+
         // debugger;
         // timeBox.textContent = "";
         // timeBox.appendChild(new Option("15:30"));
@@ -65,14 +103,13 @@ document.addEventListener("turbolinks:load", () => {
   // };
 
   // 初期表示時カレンダーの選択できる日付を取得
-  changeAvaliableDates(numBox.value);
+  changeAvaliableDates();
 
   // 貸切予約の初期設定で6人以上の場合はチェックボックスに事前にチェックが入る為のデータ取得
   // changeDisabled(numBox.value,,checkBox.checked);
 
   // 予約人数を選択した時カレンダーの選択できる日付を取得
-  numBox.addEventListener("change", (e) => {
-    const guestNumber = e.target.value;
+  numBox.addEventListener("change", () => {
     // if (guestNumber >= minimumPrivateNumber) {
     //   checkBox.removeAttribute("disabled");
     //   checkBox.setAttribute("checked", "checked");
@@ -80,7 +117,7 @@ document.addEventListener("turbolinks:load", () => {
     //   checkBox.setAttribute("disabled", "disabled");
     //   checkBox.removeAttribute("checked");
     // }
-    changeAvaliableDates(guestNumber);
+    changeAvaliableDates();
   });
 
   // checkBox.addEventListener("change", () => {
@@ -88,11 +125,5 @@ document.addEventListener("turbolinks:load", () => {
   //   }
   // });
 
-  calendar.addEventListener("change", (e) => {
-    const numBox = document.getElementById("num-box");
-    const guestNumber = numBox.value;
-    const date = e.target.value;
-    // const checked = checkBox.checked ? "1" : "";
-    changeAvaliableTime(guestNumber, date);
-  });
+  calendar.addEventListener("change", changeAvaliableTime);
 });
