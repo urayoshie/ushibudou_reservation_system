@@ -1,7 +1,6 @@
 <div class="container">
   <h2>ご予約条件を入力してください :  </h2>
-  <label>予約人数</label>
-  <p class="notification">6名様以上のご予約は貸切となります</p>
+  <label for="num-box">予約人数</label>
   <select name="pull-down" id="num-box">
     <option value="1">1名</option>
     <option value="2" selected>2名</option>
@@ -16,21 +15,13 @@
     <option value="11">11名</option>
     <option value="12">12名</option>
   </select>
+  <p class="notification">6名様以上のご予約は貸切となります</p>
   <%# <form action="cgi-bin/abc.cgi" method="post"> %>
   <%# <label><input type="checkbox" name="private" value="1" id="check" disabled onchange="">貸切</label> %>
-  <label>予約日</label>
-  <input type="text" id="flatpickr" data-arr='["2021-04-14","2021-04-24"]'>
-  <label>予約時間</label>
-  <select name="pull-down" id="time-box">
-    <%# <option value="1">15:00 ○</option>
-    <option value="2">16:00 ○</option>
-    <option value="3">17:00 ○</option>
-    <option value="4">18:00 ×</option>
-    <option value="5">19:00 ×</option>
-    <option value="6">20:00 ×</option>
-    <option value="7">21:00</option>
-    <option value="8">22:00</option>
-    <option value="9">23:00</option>
-    <option value="10">24:00</option> %>
-  </select>
+
+  <label for="calendar">予約日</label>
+  <input type="text" id="flatpickr">
+  <label for="time-box">予約時間</label>
+  <select name="pull-down" id="time-box"></select>
+
 </div>

@@ -6,7 +6,7 @@ class ReservationsController < ApplicationController
     #   "2021-05-14",
     #   "2021-05-24",
     # ]
-    # date = Date.new(2021, 5, 3)
+    # date = Date.new(2021, 6, 4)
     # guest_number = 3
     # Reservation.reserve_list(date)
     # list = Reservation.reservable_num_list(date)
@@ -14,7 +14,9 @@ class ReservationsController < ApplicationController
     # available_seats_list = Reservation.choose_private_reservation(date)
     # reservable_array = Reservation.show_reservable_date(date, guest_number)
     # show_date = Reservation.show_string_date(guest_number)
-
+    # Reservation.update_reservation_status(date)
+    reservation = Reservation.find_by(started_at: (Date.new(2021,6,2).beginning_of_day)..(Date.new(2021,6,2).end_of_day))
+    reservation.update_reservation_status
   end
 
   def available_dates

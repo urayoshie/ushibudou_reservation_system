@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_061342) do
+ActiveRecord::Schema.define(version: 2021_05_04_083340) do
+
+  create_table "reservation_statuses", charset: "utf8mb4", force: :cascade do |t|
+    t.integer "minimum_total_num", null: false
+    t.date "date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["date"], name: "index_reservation_statuses_on_date", unique: true
+  end
 
   create_table "reservations", charset: "utf8mb4", force: :cascade do |t|
     t.integer "guest_number", null: false
