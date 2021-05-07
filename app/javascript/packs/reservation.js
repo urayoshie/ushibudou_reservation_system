@@ -34,7 +34,6 @@ document.addEventListener("turbolinks:load", () => {
     const index = availableTime.indexOf(time)
     if (index >= 0) {
       timeBox.selectedIndex = index + 1
-      debugger;
     }
   };
 
