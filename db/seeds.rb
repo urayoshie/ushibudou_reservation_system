@@ -6,7 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Reservation.delete_all
+%w[reservations reservation_statuses].each do |table_name|
+  ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
+end
 
 # date_range = Date.current..(Date.current + 10.months)
 # reservation_params = date_range.map do |date|

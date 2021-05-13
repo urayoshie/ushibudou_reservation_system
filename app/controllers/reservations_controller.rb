@@ -15,8 +15,46 @@ class ReservationsController < ApplicationController
     # reservable_array = Reservation.show_reservable_date(date, guest_number)
     # show_date = Reservation.show_string_date(guest_number)
     # Reservation.update_reservation_status(date)
-    reservation = Reservation.find_by(started_at: (Date.new(2021,6,2).beginning_of_day)..(Date.new(2021,6,2).end_of_day))
-    reservation.update_reservation_status
+    @number_list = (1..Reservation::MAXIMUM_GUEST_NUMBER).to_a
+    # reservation = Reservation.find_by(started_at: (Date.new(2021, 6, 2).beginning_of_day)..(Date.new(2021, 6, 2).end_of_day))
+    # reservation.update_reservation_status
+  end
+
+  def create
+    ActiveRecord::Base.transaction do
+      reservation = Reservation.create!(reservation_params)
+      ReservationStatus.update_reservation_status!(reservation)
+
+      date = reservation.started_at.strftime("%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[Time.now.wday]})")
+      time = reservation.started_at.strftime("%-H:%M")
+      flash[:notice] = "#{reservation.guest_number}名様 / #{date} / #{time}"
+      render json: {}, status: :no_content
+    end
+  rescue => e
+    message = case e.message
+      when ReservationStatus::RESERVATION_OVER_MESSAGE
+        e.message
+      when /#{Reservation::PAST_ERROR_MESSAGE}/
+        Reservation::PAST_ERROR_MESSAGE
+      else
+        "エラーが発生しました。"
+      end
+
+    render json: { error: message }, status: :forbidden
+
+    # name = params[:reservation][:name]
+    # email = params[:reservation][:email]
+    # phone_number = params[:reservation][:phone_number]
+    # request = params[:reservation][:request]
+    # guest_number = params[:reservation][:guest_number]
+    # # date = params[:list][:date]
+    # # time = params[:list][:time]
+    # # started_at = [:reservation][:date] + [:reservation][:time]
+    # started_at = params[:reservation][:started_at]
+  end
+
+  def confirmation
+    redirect_to reservations_path if flash[:notice].nil?
   end
 
   def available_dates
@@ -106,5 +144,9 @@ class ReservationsController < ApplicationController
       time += 15.minute
     end
     available_time
+  end
+
+  def reservation_params
+    params.require(:reservation).permit(:name, :email, :phone_number, :request, :guest_number, :started_at)
   end
 end

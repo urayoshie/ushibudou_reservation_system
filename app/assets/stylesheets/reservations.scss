@@ -1,3 +1,196 @@
 // Place all the styles related to the reservations controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+.modal {
+  display: none;
+  max-width: 600px;
+  height: 500px;
+  border-radius: 2%;
+  background-color: #ccc;
+  position: fixed;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  margin: auto;
+  padding-top: 10px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.8);
+}
+// #modal-check:checked + .modal {
+//   display: block;
+//   padding: 10px;
+//   box-sizing: border-box;
+// }
+label {
+  cursor: pointer;
+}
+
+.reservation_content {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 1px;
+}
+
+.reservation_details {
+  text-align: center;
+}
+
+.form {
+  text-align: center;
+}
+
+input[type='text'] {
+  width: 260px;
+  height: 25px;
+}
+
+#reservation_button {
+  border-radius: 5%;
+  font-size: 18px;
+  text-align: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 6px 15px;
+  background-color: #ff8856;
+  border: none;
+  color: white;
+}
+
+.sub_text {
+  font-size: 11px;
+  margin-top: -10px;
+}
+
+.name {
+  font-size: 12px;
+}
+
+.guest_name {
+  width: 260px;
+  height: 25px;
+}
+
+.mail {
+  margin-top: -10px;
+  font-size: 12px;
+}
+.guest_mail {
+  width: 260px;
+  height: 25px;
+}
+
+.phone {
+  margin-top: -10px;
+  font-size: 12px;
+}
+
+.guest_phone {
+  width: 260px;
+  height: 25px;
+}
+
+.request {
+  font-size: 12px;
+  margin-top: -10px;
+}
+
+textarea {
+  margin-top: -30px;
+  resize: none;
+  width: 260px;
+  height: 80px;
+}
+
+#return_button {
+  margin-left: 20px;
+}
+
+@media screen and (max-width: 480px) {
+  .modal {
+    width: 300px;
+    height: 500px;
+  }
+}
+
+// 予約人数、予約日、予約時間のページ
+
+header {
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+footer {
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  background-color: #eeeeee;
+  max-width: 800px;
+  height: 300px;
+  margin: 200px auto;
+  border-radius: 2%;
+}
+
+h2 {
+  font-size: 18px;
+  // font-family: 'Shippori Mincho', serif;
+  padding-left: 25px;
+  padding-top: 30px;
+}
+
+#modal-button {
+  background-color: #ff8856;
+  padding: 7px 40px;
+  font-size: 17px;
+  border-radius: 4%;
+  color: white;
+  // font-family: 'Shippori Mincho', serif;
+}
+
+#guest_num {
+  // font-family: 'Shippori Mincho', serif;
+  padding-left: 25px;
+}
+
+#num-box {
+  width: 50px;
+  height: 25px;
+}
+
+.notification {
+  font-size: 14px;
+  // font-family: 'Shippori Mincho', serif;
+  float: right;
+  // margin-right: 350px;
+  // margin-top: 2px;
+}
+
+// #reservation_date {
+//   font-family: 'Shippori Mincho', serif;
+//   // float: right;
+//   // margin-top: 50px;
+//   // margin-right: 120px;
+// }
+
+#flatpickr {
+  width: 140px;
+  height: 18px;
+  // float: right;
+  // margin-right: 570px;
+  // margin-top: -23px;
+}
+
+// #reservation_time {
+//   font-family: 'Shippori Mincho', serif;
+//   // float: right;
+// }
+
+#time-box {
+  width: 140px;
+  height: 25px;
+  // float: right;
+}
