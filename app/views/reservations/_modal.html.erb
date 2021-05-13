@@ -1,0 +1,21 @@
+<div class="modal">
+  <label for="modal-check" id="return_button">&lt; 戻る</label>
+  <p class="reservation_content">予約内容</p>
+  <p class="reservation_details">4名様 / 2021年6月4日(金) / 19:00</p>
+  <div class="form">
+    <form action="/reservations" id="modal-form">
+      <p class="name">お名前（必須）<br>
+        <input type="text" maxlength="30" name="name" class="guest_name" required /></p>
+      <p class="mail">メールアドレス（必須）<br>
+        <input type="email" maxlength="256" name="mail" class="guest_mail" pattern="^[\w+\-.]+@[a-z\d\-.]+\.[a-z]+$" required /></p>
+      <p class="phone">電話番号（必須）<br>
+        <input type="tel" maxlength="13" name="phone" class="guest_phone" pattern="^0\d{1,3}-?\d{2,4}-?\d{3,4}$" required /></p>
+      <p class="request">ご要望<br>
+        <p class="sub_text">(アレルギーなどありましたら事前にお知らせください)</p>
+        <br>
+        <textarea name="comment" cols="35" rows="4" maxlength="300" class="guest_request"></textarea>
+      </p>
+      <input type="submit" id="reservation_button" value="予約を確定する">
+    </form>
+  </div>
+</div>

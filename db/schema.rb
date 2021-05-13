@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_04_083340) do
+ActiveRecord::Schema.define(version: 2021_05_07_073043) do
 
   create_table "reservation_statuses", charset: "utf8mb4", force: :cascade do |t|
     t.integer "minimum_total_num", null: false
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_083340) do
     t.string "phone_number", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "request"
   end
 
 end
