@@ -211,7 +211,7 @@ document.addEventListener('turbolinks:load', () => {
     })
       .then((response) => {
         if (response.ok) {
-          alert('予約に成功しました!');
+          // alert('予約に成功しました!');
           location.href = '/reservations/confirmation';
         } else {
           return response.json();
@@ -219,6 +219,9 @@ document.addEventListener('turbolinks:load', () => {
       })
       .then((data) => {
         alert(data.error);
+        // 戻るボタンをクリックした時と同じ処理
+        disappearModal();
+        changeAvailableDates();
       });
   };
 
