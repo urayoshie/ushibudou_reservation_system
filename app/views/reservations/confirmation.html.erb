@@ -1,5 +1,17 @@
-<h1>以下の内容で予約が確定しました。</h1>
-<%= flash[:notice] %>
-<p class="cancel">ご予約をキャンセルされる場合は、お手数をおかけしますが、下記の電話番号までご連絡ください。</p>
-<p class="restaurant_phone">TEL  :  06 - 6180 - 4249 </p>
-<button id="access">お店詳細</button>
+<header>
+  <img src="/assets/logo-white.png" alt="" id="logo">
+</header>
+<div class="confirmation_container">
+
+  <h3>以下の内容で予約が確定しました</h3>
+    <div class="confirmation">
+      <%= flash[:notice] %>
+    </div>
+    <p class="cancel">ご予約をキャンセルされる場合は、お手数をおかけしますが、下記の電話番号までご連絡ください。</p>
+    <p class="restaurant_phone">TEL  :  06 - 6180 - 4249 </p>
+    <div class="button">
+      <button id="access">お店詳細</button>
+    </div>
+</div>
+
+<footer><small>© 2021 Ushibudou</small></footer>

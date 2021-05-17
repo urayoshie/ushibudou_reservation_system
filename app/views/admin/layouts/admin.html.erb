@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>UshibudouReservationSystem | 管理画面</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+  <div class="log_out">
+    <%= link_to "ログアウト", destroy_admin_user_session_path, method: :delete, data: { confirm: "ログアウトしますか？" } %>
+  </div>
+    <%= yield %>
+  </body>
+</html>
