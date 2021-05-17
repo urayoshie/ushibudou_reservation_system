@@ -31,3 +31,6 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# ローカル環境で投稿した画像を残さない為
+/public/uploads/

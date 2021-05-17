@@ -9,7 +9,7 @@
     <%= form.text_area :content %>
   </p>
   <p class="img">
-    <%= form.file_field :image %>
+    <%= form.file_field :image, accept: "image/png,image/jpeg,image/gif" %>
   </p>
 
   <%= form.submit "送信" %>

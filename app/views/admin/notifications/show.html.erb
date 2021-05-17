@@ -1,4 +1,7 @@
 <p>タイトル: <%= @notification.title %></p>
 <p><%= simple_format(h @notification.content) %></p>
+<% if @notification.image? %>
+  <p><%= image_tag @notification.image.url %></p>
+<% end %>
 <hr>
 <p><%= link_to "お知らせ新規投稿", new_admin_notification_path %></p>

@@ -15,6 +15,6 @@ class Admin::NotificationsController < Admin::AdminController
   private
 
   def notification_params
-    params.require(:notification).permit(:title, :content)
+    params.require(:notification).permit(:title, :content, :image)
   end
 end
