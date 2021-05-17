@@ -20,6 +20,11 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# ログイン機能
+gem 'devise'
+# 多言語対応(Rails 6の場合)
+gem 'rails-i18n', '~> 6.0'
+gem 'devise-i18n'
 
 gem 'validates_timeliness', '~> 6.0.0.alpha1'
 

@@ -2,6 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
+// modal
 .modal {
   display: none;
   max-width: 600px;
@@ -117,7 +118,6 @@ textarea {
 
 header {
   background-color: black;
-  color: white;
   text-align: center;
 }
 
@@ -273,5 +273,56 @@ h2 {
   #modal-button {
     margin-top: 30px;
     margin-left: 70px;
+  }
+}
+
+// confirmation.html.erb
+.confirmation_container {
+  background-color: #eeeeee;
+  max-width: 800px;
+  height: 335px;
+  margin: 150px auto;
+  border-radius: 2%;
+}
+
+h3 {
+  padding-top: 40px;
+  text-align: center;
+}
+
+.confirmation {
+  margin-top: 30px;
+  text-align: center;
+  
+}
+
+.cancel {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.restaurant_phone {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.button {
+  margin-top: 25px;
+  text-align: center;
+}
+
+#access {
+  background-color: #ff8856;
+  padding: 7px 40px;
+  font-size: 17px;
+  border-radius: 4%;
+  color: white;
+  border: none;
+}
+
+@media screen and (max-width: 767px) {
+  .confirmation_container {
+    max-width: 350px;
+    height: 400px;
   }
 }
