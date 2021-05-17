@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @notification.title %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @notification.content %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <% if @notification.image? %>
+    <p><%= image_tag @notification.image.url %></p>
+  <% end %>
+</p>
+
+<%= link_to 'Edit', edit_admin_notification_path(@notification) %> |
+<%= link_to 'Back', admin_notifications_path %>

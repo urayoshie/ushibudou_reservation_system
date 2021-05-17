@@ -1,0 +1,6 @@
+<h1>Editing Admin Notification</h1>
+
+<%= render 'form', notification: @notification, url: admin_notification_path(@notification) %>
+
+<%= link_to 'Show', admin_notification_path(@notification) %> |
+<%= link_to 'Back', admin_notifications_path %>
