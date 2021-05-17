@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_17_011258) do
+ActiveRecord::Schema.define(version: 2021_05_17_001758) do
 
   create_table "admin_users", charset: "utf8mb4", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -24,14 +24,6 @@ ActiveRecord::Schema.define(version: 2021_05_17_011258) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
-  end
-
-  create_table "notifications", charset: "utf8mb4", force: :cascade do |t|
-    t.string "title", null: false
-    t.text "content", null: false
-    t.string "image"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "reservation_statuses", charset: "utf8mb4", force: :cascade do |t|
