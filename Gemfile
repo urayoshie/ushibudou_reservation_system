@@ -16,7 +16,9 @@ gem 'webpacker', '~> 5.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.7'
+gem 'active_model_serializers'
+gem 'rack-cors'
+# gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -26,6 +28,13 @@ gem 'devise'
 gem 'rails-i18n', '~> 6.0'
 gem 'devise-i18n'
 
+# 画像投稿機能
+gem 'carrierwave', '~> 2.0'
+
+# 画像加工
+gem 'mini_magick'
+
+# 15時〜23時以外は入力できない様にバリデーションを入れる為のもの
 gem 'validates_timeliness', '~> 6.0.0.alpha1'
 
 # Reduces boot times through caching; required in config/boot.rb

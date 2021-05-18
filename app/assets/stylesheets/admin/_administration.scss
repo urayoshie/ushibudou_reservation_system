@@ -1,3 +1,31 @@
 .log_out {
-  margin-left: 100px;
+  margin-left: 180px;
+  margin-top: 40px;
+  text-decoration: none;
+}
+
+th,td {
+  border: solid 1px;
+  padding: 10px;
+  text-decoration: none;
+}
+
+tr:nth-child(odd) {
+  background-color:  	#EEEEEE;
+}
+
+.all_list {
+  margin-left: 180px;
+}
+
+.post_new {
+  margin-left: 180px;
+}
+
+.show_all {
+  text-align: center;
+}
+
+.show_edit_back {
+  margin-left: 180px;
 }
