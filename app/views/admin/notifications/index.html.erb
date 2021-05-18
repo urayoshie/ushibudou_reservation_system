@@ -1,13 +1,14 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Admin Notifications</h1>
+<div class="all_list">
+<h1>管理/お知らせ</h1>
 
-<table>
+<table class="list">
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Content</th>
-      <th>Image</th>
+      <th>タイトル</th>
+      <th>内容</th>
+      <th>画像</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -18,14 +19,14 @@
         <td><%= notification.title %></td>
         <td><%= notification.content %></td>
         <td><%= notification.image %></td>
-        <td><%= link_to 'Show', admin_notification_path(notification) %></td>
-        <td><%= link_to 'Edit', edit_admin_notification_path(notification) %></td>
-        <td><%= link_to 'Destroy', admin_notification_path(notification), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to '詳細', admin_notification_path(notification) %></td>
+        <td><%= link_to '編集', edit_admin_notification_path(notification) %></td>
+        <td><%= link_to '削除', admin_notification_path(notification), method: :delete, data: { confirm: '削除しますか?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Admin Notification', new_admin_notification_path %>
+  <%= link_to '新規お知らせ投稿', new_admin_notification_path %>
+</div>

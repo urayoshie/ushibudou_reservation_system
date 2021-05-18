@@ -1,0 +1,9 @@
+ja:
+  activerecord:
+    models:
+      notification: お知らせ
+    attributes:
+      notification:
+        title: タイトル
+        content: 内容
+        image: 画像
