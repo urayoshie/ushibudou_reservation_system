@@ -1,0 +1,10 @@
+ja:
+  enums:
+    menu:
+      genre:
+        meat: 'タン/赤身'
+        innards: 'ホルモン'
+        appetizer: '一品'
+        others: 'その他'
+        main: '〆もの'
+        drink: 'DRINK'

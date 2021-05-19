@@ -2,8 +2,13 @@ ja:
   activerecord:
     models:
       notification: お知らせ
+      menu: メニュー
     attributes:
       notification:
         title: タイトル
         content: 内容
         image: 画像
+      menu:
+        genre: ジャンル
+        name: 商品名
+        price: 価格

@@ -65,6 +65,8 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    acts_as_list (1.0.4)
+      activerecord (>= 4.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     bcrypt (3.1.16)
@@ -94,6 +96,8 @@ GEM
       warden (~> 1.2.3)
     devise-i18n (1.9.4)
       devise (>= 4.7.1)
+    enum_help (0.0.17)
+      activesupport (>= 3.0.0)
     erubi (1.10.0)
     ffi (1.15.0)
     globalid (0.4.2)
@@ -236,11 +240,13 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  acts_as_list
   bootsnap (>= 1.4.4)
   byebug
   carrierwave (~> 2.0)
   devise
   devise-i18n
+  enum_help
   listen (~> 3.3)
   mini_magick
   mysql2 (~> 0.5)
