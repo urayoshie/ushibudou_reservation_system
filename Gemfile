@@ -28,6 +28,9 @@ gem 'devise'
 gem 'rails-i18n', '~> 6.0'
 gem 'devise-i18n'
 
+# enumの日本語表記
+gem 'enum_help'
+
 # 画像投稿機能
 gem 'carrierwave', '~> 2.0'
 
@@ -36,6 +39,9 @@ gem 'mini_magick'
 
 # 15時〜23時以外は入力できない様にバリデーションを入れる為のもの
 gem 'validates_timeliness', '~> 6.0.0.alpha1'
+
+# 連番
+gem 'acts_as_list'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

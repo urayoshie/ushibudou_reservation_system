@@ -1,0 +1,51 @@
+genre,name,price
+meat,特上タン,700
+meat,上タン,500
+meat,タン切り落とし,350
+meat,リブロース,750
+meat,リブカブリ,600
+meat,カルビ,500
+meat,赤身,600
+meat,リブすき焼き,1000
+meat,ヘレ,1500
+innards,塩ニンニクハラミ,600
+innards,ハラミ,550
+innards,シマチョウ,500
+innards,ミノ,500
+innards,ツラミ,450
+innards,レバー,400
+innards,ハツ,400
+innards,トロホルモン,350
+innards,ウインナー,550
+innards,しいたけ,500
+appetizer,特製ユッケ,1000
+appetizer,サーロインユッケ,1000
+appetizer,白センマイ,700
+appetizer,ハチノス和えもの,650
+appetizer,牛握り 二貫,700
+appetizer,本日の刺しもの,600
+others,チョレギサラダ,500
+others,巻き野菜セット,550
+others,チャンジャ,400
+others,キムチ 各,400
+others,ナムル 各,400
+main,冷麺 各,600
+main,たまごスープ,500
+main,わかめスープ,500
+main,テールスープ,1000
+main,土鍋ご飯 一合,600
+main,中ご飯,250
+main,TKG,500
+drink,生ビール,450
+drink,瓶ビール,500
+drink,チューハイ,400
+drink,ハイボール,400
+drink,山崎ハイボール,700
+drink,焼酎グラス,350
+drink,日本酒グラス,400
+drink,梅酒,400
+drink,ワイングラス,400
+drink,ワインボトル,3000
+drink,スパークリング,4000
+drink,ドライゼロ,350
+drink,ソフトドリンク 各,250

@@ -6,7 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-%w[reservations reservation_statuses].each do |table_name|
+require "csv"
+
+%w[reservations reservation_statuses menus].each do |table_name|
   ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
 end
 
@@ -93,7 +95,7 @@ end
 
 Reservation.create!(reservation_params)
 
-puts "インポートに成功しました！"
+puts "予約のインポートに成功しました！"
 
 ADMIN_EMAIL = "admin@example.com"
 PASSWORD = "password"
@@ -102,3 +104,8 @@ AdminUser.find_or_create_by!(email: ADMIN_EMAIL) do |admin_user|
   admin_user.password = PASSWORD
   puts "管理者ユーザーの初期データインポートに成功しました。"
 end
+
+CSV.foreach("db/csv_data/menu.csv", headers: true) do |row|
+  Menu.create!(row)
+end
+puts "メニューのインポートに成功しました！"

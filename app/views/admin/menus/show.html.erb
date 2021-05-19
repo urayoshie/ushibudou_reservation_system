@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+<div class="all_menu">
+  <p>
+    <strong>ジャンル:</strong>
+    <%= @menu.genre %>
+  </p>
+  <p>
+    <strong>商品名:</strong>
+    <%= @menu.name %>
+  </p>
+  <p>
+    <strong>価格:</strong>
+    <% @menu.price %>
+  </p>
+</div>
+<div class="show_edit_back">
+  <%= link_to '編集', edit_admin_menu_path(@menu) %> |
+  <%= link_to '戻る', admin_menus_path %>
+</div>

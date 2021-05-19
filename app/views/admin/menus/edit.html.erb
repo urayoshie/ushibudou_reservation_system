@@ -1,0 +1,4 @@
+<h1>メニュー/編集</h1>
+<%= render 'form', menu: @menu, url: admin_menu_path(@menu) %>
+<%= link_to '詳細', admin_menu_path(@menu) %> |
+<%= link_to '戻る', admin_menus_path %>

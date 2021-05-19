@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   namespace :admin do
     root "homes#index"
     resources :notifications
+    resources :menus
   end
   resources :notifications, only: :index
+  resources :menus, only: :index
   resources :reservations, only: [:index, :create] do
     collection do
       get "available_dates"
