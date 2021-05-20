@@ -24,6 +24,8 @@ document.addEventListener('turbolinks:load', () => {
   // const checkBox = document.getElementById("check");
   const minimumPrivateNumber = 6;
 
+  if (!reservationButton) return;
+
   let config = {
     locale: 'ja',
     // enable: JSON.parse(calendar.dataset.arr),

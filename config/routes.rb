@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :menus
   end
   resources :notifications, only: :index
-  resources :menus, only: :index
+  resources :menus, only: [:index, :update]
   resources :reservations, only: [:index, :create] do
     collection do
       get "available_dates"
