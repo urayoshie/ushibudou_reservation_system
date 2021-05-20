@@ -34,3 +34,4 @@ yarn-debug.log*
 
 # ローカル環境で投稿した画像を残さない為
 /public/uploads/
+**/.DS_Store

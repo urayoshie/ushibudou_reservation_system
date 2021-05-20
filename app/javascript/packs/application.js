@@ -6,6 +6,13 @@
 import Rails from '@rails/ujs';
 import Turbolinks from 'turbolinks';
 import '../reservation';
+import { menuSortable } from '../menu_sortable';
 
 Rails.start();
 Turbolinks.start();
+
+document.addEventListener('turbolinks:load', () => {
+  if (location.pathname == '/admin/menus') {
+    menuSortable();
+  }
+});

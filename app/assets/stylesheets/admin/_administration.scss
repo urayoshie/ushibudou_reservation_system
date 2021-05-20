@@ -4,6 +4,7 @@
   text-decoration: none;
 }
 
+// お知らせ機能
 th,
 td {
   border: solid 1px;
@@ -29,4 +30,28 @@ tr:nth-child(odd) {
 
 .show_edit_back {
   margin-left: 180px;
+}
+
+// メニューテーブル
+.menu-draggable {
+  display: table;
+}
+
+.item {
+  display: table-cell;
+  border: solid 1px #999;
+  width: 150px;
+}
+
+.title {
+  display: table-cell;
+  border: solid 1px #999;
+  width: 150px;
+  text-align: center;
+}
+
+.menu-position,
+.menu-edit,
+.menu-delete {
+  text-align: center;
 }
