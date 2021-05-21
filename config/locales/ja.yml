@@ -3,6 +3,7 @@ ja:
     models:
       notification: お知らせ
       menu: メニュー
+      reservation: 予約
     attributes:
       notification:
         title: タイトル
@@ -12,3 +13,16 @@ ja:
         genre: ジャンル
         name: 商品名
         price: 価格
+      reservation:
+        started_at: 予約日時
+        name: 予約名
+        guest_number: 予約人数
+        email: メールアドレス
+        phone_number: 電話番号
+        request: 要望
+  time:
+    formats:
+      date: '%Y/%m/%d(%a)'
+      default: '%Y/%m/%d %H:%M:%S'
+      long: '%H時%M分'
+      short: '%H:%M'

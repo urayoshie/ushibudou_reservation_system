@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     root "homes#index"
     resources :notifications
     resources :menus
+    resources :reservations
   end
   resources :notifications, only: :index
   resources :menus, only: [:index, :update]

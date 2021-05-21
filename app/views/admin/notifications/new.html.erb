@@ -1,8 +1,6 @@
 <div class="post_new">
   <h1>新規お知らせ投稿</h1>
-
   <%= render 'form', notification: @notification, url: admin_notifications_path %>
-
-  <%= link_to '戻る', admin_notifications_path %>
+  <%= link_to 'お知らせ一覧', admin_notifications_path %>
+  <%= link_to '管理画面トップページ', admin_root_path %>
 </div>
-

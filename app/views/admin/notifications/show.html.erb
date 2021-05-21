@@ -1,26 +1,20 @@
-<p id="notice"><%= notice %></p>
-
-<div class="show_all">
-
-  <p>
-    <strong>タイトル:</strong>
-    <%= @notification.title %>
-  </p>
-
-  <p>
-    <strong>内容:</strong>
-    <%= @notification.content %>
-  </p>
-
-  <p>
-    <strong>画像:</strong>
-    <% if @notification.image? %>
-      <p><%= image_tag @notification.image.url %></p>
-    <% end %>
-  </p>
+div class="show_all">
+<p>
+  <strong>タイトル:</strong>
+  <%= @notification.title %>
+</p>
+<p>
+  <strong>内容:</strong>
+  <%= @notification.content %>
+</p>
+<p>
+  <strong>画像:</strong>
+  <% if @notification.image? %>
+    <p><%= image_tag @notification.image.url %></p>
+  <% end %>
+</p>
 </div>
 <div class="show_edit_back">
   <%= link_to '編集', edit_admin_notification_path(@notification) %> |
   <%= link_to '戻る', admin_notifications_path %>
 </div>
-

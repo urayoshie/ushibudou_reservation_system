@@ -6,6 +6,7 @@
 import Rails from '@rails/ujs';
 import Turbolinks from 'turbolinks';
 import '../reservation';
+import '../admin_reservation';
 import { menuSortable } from '../menu_sortable';
 
 Rails.start();

@@ -1,0 +1,29 @@
+<h1>予約一覧</h1>
+<table class="reservation-list">
+  <thead>
+    <tr>
+      <th>予約日</th>
+      <th>予約時間</th>
+      <th>予約名</th>
+      <th>予約人数</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <%# <th colspan="3"></th> %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @reservations.each do |reservation| %>
+      <tr>
+        <td><%= l reservation.started_at, format: :date %></td>
+        <td><%= l reservation.started_at, format: :short %></td>
+        <td><%= reservation.name %></td>
+        <td><%= reservation.guest_number %></td>
+        <td><%= link_to '詳細', admin_reservation_path(reservation) %></td>
+        <td><%= link_to '編集', edit_admin_reservation_path(reservation) %></td>
+        <td><%= link_to '削除', admin_reservation_path(reservation), method: :delete, data: { confirm: '削除しますか?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to '管理画面トップページ', admin_root_path %>

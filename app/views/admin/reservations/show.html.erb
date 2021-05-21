@@ -1,0 +1,34 @@
+<div class="reservation_details">
+  <p>
+    <strong>予約日:</strong>
+    <%= l @reservation.started_at, format: :date %>
+  </p>
+  <p>
+    <strong>予約時間:</strong>
+    <%= l @reservation.started_at, format: :short %>
+  </p>
+  <p>
+    <strong>予約名:</strong>
+    <%= @reservation.name %>
+  </p>
+  <p>
+    <strong>予約人数:</strong>
+    <%= @reservation.guest_number %>
+  </p>
+  <p>
+    <strong>メールアドレス:</strong>
+    <%= @reservation.email %>
+  </p>
+  <p>
+    <strong>電話番号:</strong>
+    <%= @reservation.phone_number %>
+  </p>
+  <p>
+    <strong>要望:</strong>
+    <%= @reservation.request %>
+  </p>
+</div>
+<div class="reservation_edit_back">
+  <%= link_to '編集', edit_admin_reservation_path(@reservation) %>
+  <%= link_to '戻る', admin_reservations_path %>
+</div>
