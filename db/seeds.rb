@@ -138,3 +138,6 @@ CSV.foreach("db/csv_data/menu.csv", headers: true) do |row|
   Menu.create!(row)
 end
 puts "メニューのインポートに成功しました！"
+
+# reservation_statuses テーブルを最新の状態に更新
+system("rails reservation:update_reservation_status")

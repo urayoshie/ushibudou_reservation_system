@@ -14,7 +14,11 @@ class Admin::ReservationsController < Admin::AdminController
 
   def update
     reservation = Reservation.find(params[:id])
-    reservation.update!(reservation_params)
+    ActiveRecord::Base.transaction do
+      reservation = Reservation.update!(reservation_params)
+      reservation_date = reservation.started_at.to_date
+      ReservationStatus.update_reservation_status!(reservation_date)
+    end
     redirect_to admin_reservation_path
   end
 

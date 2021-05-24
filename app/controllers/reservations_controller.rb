@@ -23,7 +23,8 @@ class ReservationsController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       reservation = Reservation.create!(reservation_params)
-      ReservationStatus.update_reservation_status!(reservation)
+      reservation_date = reservation.started_at.to_date
+      ReservationStatus.update_reservation_status!(reservation_date)
 
       date = reservation.started_at.strftime("%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[Time.now.wday]})")
       time = reservation.started_at.strftime("%-H:%M")
