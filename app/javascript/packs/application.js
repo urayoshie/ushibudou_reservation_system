@@ -5,7 +5,7 @@
 
 import Rails from '@rails/ujs';
 import Turbolinks from 'turbolinks';
-import '../reservation';
+import { reservationSystem } from '../reservation';
 // import '../admin_reservation';
 import { menuSortable } from '../menu_sortable';
 
@@ -15,5 +15,7 @@ Turbolinks.start();
 document.addEventListener('turbolinks:load', () => {
   if (location.pathname == '/admin/menus') {
     menuSortable();
+  } else if (document.getElementById('num-box')) {
+    reservationSystem();
   }
 });

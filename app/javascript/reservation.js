@@ -1,10 +1,10 @@
 // カレンダー
-require('flatpickr');
-require('flatpickr/dist/l10n/ja');
+import 'flatpickr';
+import 'flatpickr/dist/l10n/ja';
 // カレンダーの色を変更
-require('flatpickr/dist/themes/material_orange.css');
+import 'flatpickr/dist/themes/material_orange.css';
 
-document.addEventListener('turbolinks:load', () => {
+export const reservationSystem =  () => {
   const calendar = document.getElementById('flatpickr');
   const numBox = document.getElementById('num-box');
   const timeBox = document.getElementById('time-box');
@@ -238,4 +238,4 @@ document.addEventListener('turbolinks:load', () => {
     // 「予約する」ボタンをクリックしたらcreateアクションにリクエストを出す
     reservationButton.addEventListener('click', sendReservationInfo, { passive: false });
   }
-});
+}

@@ -9,6 +9,10 @@
       </ul>
     </div>
   <% end %>
+  <div class="field">
+    <%= form.label :guest_number, for: "num-box" %>
+    <%= form.text_field :guest_number, id: "num-box" %>
+  </div>
   <div class="reservation_date">
     <%= form.label :started_date, "予約日" %>
     <%= form.text_field :started_date, id: "flatpickr", value: @reservation.started_at.to_date %>
@@ -20,10 +24,6 @@
   <div class="field">
     <%= form.label :name %>
     <%= form.text_field :name %>
-  </div>
-  <div class="field">
-    <%= form.label :guest_number, for: "num-box" %>
-    <%= form.text_field :guest_number, id: "num-box" %>
   </div>
   <div class="field">
     <%= form.label :email %>
