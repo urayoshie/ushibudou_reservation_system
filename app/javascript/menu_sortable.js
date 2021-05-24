@@ -1,8 +1,7 @@
 import Sortable from 'sortablejs';
 
-const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
 const menuSortable = () => {
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
   new Sortable(menu, {
     draggable: '.menu-draggable',
     animation: 150,

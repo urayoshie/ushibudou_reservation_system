@@ -12,7 +12,10 @@ class Admin::ReservationsController < Admin::AdminController
   def edit
   end
 
-  def create
+  def update
+    reservation = Reservation.find(params[:id])
+    reservation.update!(reservation_params)
+    redirect_to admin_reservation_path
   end
 
   def destroy
@@ -27,6 +30,6 @@ class Admin::ReservationsController < Admin::AdminController
   end
 
   def reservation_params
-    params.require(:reservation).permit(:guest_number, :started_at, :name, :email, :phone_number, :request)
+    params.require(:reservation).permit(:guest_number, :started_date, :started_time, :name, :email, :phone_number, :request)
   end
 end

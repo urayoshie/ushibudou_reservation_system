@@ -6,11 +6,12 @@ require('flatpickr/dist/themes/material_orange.css');
 
 document.addEventListener('turbolinks:load', () => {
   const calendar = document.getElementById('flatpickr');
-  const guestNum = document.getElementById('guest_num');
+  const numBox = document.getElementById('guest_num');
   const timeBox = document.getElementById('time-box');
 
   let config = {
     locale: 'ja',
+    disableMobile: 'true',
   };
   flatpickr('#flatpickr', config);
 
@@ -33,7 +34,7 @@ document.addEventListener('turbolinks:load', () => {
   };
 
   const changeAvailableTime = () => {
-    const guestNumber = guestNum.value;
+    const guestNumber = numBox.value;
     const date = calendar.value;
     fetch(`/reservations/available_time?guest_number=${guestNumber}&date=${date}`)
       .then((response) => response.json())

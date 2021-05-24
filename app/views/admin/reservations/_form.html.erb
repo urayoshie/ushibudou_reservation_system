@@ -1,4 +1,4 @@
-<%= form_with(model: reservation, url: url) do |form| %>
+<%= form_with(model: reservation, url: admin_reservation_path(reservation)) do |form| %>
   <% if reservation.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
@@ -9,21 +9,21 @@
       </ul>
     </div>
   <% end %>
-  <div class="field">
+  <div class="reservation_date">
     <%= form.label :started_date, "予約日" %>
     <%= form.text_field :started_date, id: "flatpickr", value: @reservation.started_at.to_date %>
-    <label for="time-box" id="reservation-time">予約時間</label>
-    <select name="pull-down" id="time-box">
-      <option value="reservation-time"><%= l @reservation.started_at, format: :short %></option>
-    </select>
   </div>
+  <label for="time-box" id="reservation_time">予約時間</label>
+  <select name="started_time" id="time-box">
+    <option value="reservation-time"><%= l @reservation.started_at, format: :short %></option>
+  </select>
   <div class="field">
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
   <div class="field">
-    <%= form.label :guest_number %>
-    <%= form.text_field :guest_number, id: "guest_num" %>
+    <%= form.label :guest_number, for: "num-box" %>
+    <%= form.text_field :guest_number, id: "num-box" %>
   </div>
   <div class="field">
     <%= form.label :email %>

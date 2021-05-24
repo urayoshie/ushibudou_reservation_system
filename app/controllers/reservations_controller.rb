@@ -88,7 +88,6 @@ class ReservationsController < ApplicationController
     # # boolean_list = Reservation.display_available_time(date, guest_number)
     # # time = Time.new(2000, 1, 1, Reservation::START_TIME, 0, 0)
     # # boolean_list.each do |boolean|
-    # #   binding.pry
     # #   if (guest_number >= MINIMUM_PRIVATE_NUMBER && checked)
     # #     available_time <<
     # #   else
@@ -129,7 +128,6 @@ class ReservationsController < ApplicationController
     # boolean_list = Reservation.display_available_time(date, guest_number)
     # time = Time.new(2000, 1, 1, Reservation::START_TIME, 0, 0)
     # boolean_list.each do |boolean|
-    #   binding.pry
     #   if (guest_number >= MINIMUM_PRIVATE_NUMBER && checked)
     #     available_time <<
     #   else

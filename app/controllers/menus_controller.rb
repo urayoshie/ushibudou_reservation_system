@@ -17,7 +17,6 @@ class MenusController < ApplicationController
   def update
     menu = Menu.find_by(position: params[:id], name: params[:name])
     new_menu = Menu.find_by(position: params[:new_index])
-    binding.pry
     if menu.nil? || new_menu.nil?
       render json: { error: "データに異常が発生しておりますのでリロードします。" }, status: :bad_resuest
     elsif menu.genre == new_menu.genre

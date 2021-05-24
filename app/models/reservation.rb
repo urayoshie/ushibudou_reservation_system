@@ -65,7 +65,6 @@ class Reservation < ApplicationRecord
 
     # # それぞれの時間の予約の合計人数
     # where(started_at: beginning_of_day..end_of_day).each do |reservation|
-    #   binding.pry
     #   start_index = (reservation.started_at - beginning_of_day).floor / 60 / TERM
     #   # list2 = list[start_index][:number]
     #   8.times do |i|
@@ -144,7 +143,6 @@ class Reservation < ApplicationRecord
       biggest_number_list << { biggest_number: biggest_number, private_reservation_exists: private_reservation, error: error }
     end
     biggest_number_list
-    # binding.pry
   end
 
   # # 空き人数と貸切予約の有無の1日単位(15:00~23:00)の配列ハッシュデータ
@@ -201,7 +199,6 @@ class Reservation < ApplicationRecord
     #   else
     #     array << false
     #   end
-    #   binding.pry
     # end
     reservable_array
   end

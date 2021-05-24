@@ -22,14 +22,15 @@ document.addEventListener('turbolinks:load', () => {
   const guestPhone = document.querySelector('.guest_phone');
   const guestRequest = document.querySelector('.guest_request');
   // const checkBox = document.getElementById("check");
-  const minimumPrivateNumber = 6;
+  // const minimumPrivateNumber = 6;
 
-  if (!reservationButton) return;
+  // if (!reservationButton) return;
 
   let config = {
     locale: 'ja',
     // enable: JSON.parse(calendar.dataset.arr),
     minDate: 'today',
+    disableMobile: 'true',
   };
 
   let fp = flatpickr('#flatpickr', config);
@@ -52,7 +53,7 @@ document.addEventListener('turbolinks:load', () => {
     }
   };
 
-  const changeAvailableDates = () => {
+  const changeAvailableDates = (open = true) => {
     const guestNumber = numBox.value;
     const date = calendar.value;
     fetch(`/reservations/available_dates?guest_number=${guestNumber}&date=${date}`)
@@ -69,9 +70,9 @@ document.addEventListener('turbolinks:load', () => {
           // カレンダーの日付選択を取り消す
           calendar.value = '';
           // カレンダーの日付が空の時はmodalButtonを選択不可にする
-          modalButton.disabled = true;
+          if (modalButton) modalButton.disabled = true;
           // カレンダーを開く
-          fp.open();
+          if (open) fp.open();
         } else {
           // const timeBox = document.getElementById("time-box");
           // let str = "";
@@ -91,7 +92,7 @@ document.addEventListener('turbolinks:load', () => {
       .then((data) => {
         insertAvailableTime(data.availableTime);
         // 予約時間のボックスが空の時はmodalButtonを選択不可にする
-        if (data.availableTime.length === 0) {
+        if (modalButton && data.availableTime.length === 0) {
           modalButton.disabled = true;
         }
         // const timeBox = document.getElementById("time-box");
@@ -124,24 +125,6 @@ document.addEventListener('turbolinks:load', () => {
   //       // }
   //     });
   // };
-
-  // 初期表示時カレンダーの選択できる日付を取得
-  changeAvailableDates();
-
-  // 貸切予約の初期設定で6人以上の場合はチェックボックスに事前にチェックが入る為のデータ取得
-  // changeDisabled(numBox.value,,checkBox.checked);
-
-  // 予約人数を選択した時カレンダーの選択できる日付を取得
-  numBox.addEventListener('change', () => {
-    // if (guestNumber >= minimumPrivateNumber) {
-    //   checkBox.removeAttribute("disabled");
-    //   checkBox.setAttribute("checked", "checked");
-    // } else {
-    //   checkBox.setAttribute("disabled", "disabled");
-    //   checkBox.removeAttribute("checked");
-    // }
-    changeAvailableDates();
-  });
 
   // checkBox.addEventListener("change", () => {
   //   if (checkBox.checked) {
@@ -227,12 +210,32 @@ document.addEventListener('turbolinks:load', () => {
       });
   };
 
+  // 初期表示時カレンダーの選択できる日付を取得
+  changeAvailableDates(false);
+
+  // 貸切予約の初期設定で6人以上の場合はチェックボックスに事前にチェックが入る為のデータ取得
+  // changeDisabled(numBox.value,,checkBox.checked);
+
+  // 予約人数を選択した時カレンダーの選択できる日付を取得
+  numBox.addEventListener('change', () => {
+    // if (guestNumber >= minimumPrivateNumber) {
+    //   checkBox.removeAttribute("disabled");
+    //   checkBox.setAttribute("checked", "checked");
+    // } else {
+    //   checkBox.setAttribute("disabled", "disabled");
+    //   checkBox.removeAttribute("checked");
+    // }
+    changeAvailableDates();
+  });
+
   calendar.addEventListener('change', changeAvailableTime);
-  modalButton.addEventListener('click', appearModal);
-  // 戻るボタンをクリックしたら、disappearModalが起動
-  returnButton.addEventListener('click', disappearModal);
-  // カレンダーと予約時間の両方が選択されれば modalButton の disabled を削る
-  timeBox.addEventListener('change', appearButton);
-  // 「予約する」ボタンをクリックしたらcreateアクションにリクエストを出す
-  reservationButton.addEventListener('click', sendReservationInfo, { passive: false });
+  if (modalButton) {
+    modalButton.addEventListener('click', appearModal);
+    // 戻るボタンをクリックしたら、disappearModalが起動
+    returnButton.addEventListener('click', disappearModal);
+    // カレンダーと予約時間の両方が選択されれば modalButton の disabled を削る
+    timeBox.addEventListener('change', appearButton);
+    // 「予約する」ボタンをクリックしたらcreateアクションにリクエストを出す
+    reservationButton.addEventListener('click', sendReservationInfo, { passive: false });
+  }
 });
