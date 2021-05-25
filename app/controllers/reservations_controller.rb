@@ -63,9 +63,18 @@ class ReservationsController < ApplicationController
     date = params["date"]&.to_date
     exclude_reservation_id = params[:exclude_reservation_id]&.to_i
 
-    # available_dates = Reservation.show_string_date(guest_number)
-
     available_dates = Reservation.show_string_date(guest_number)
+
+    if exclude_reservation_id
+      # 管理画面の編集ページで、編集中の予約の日付が含まれていない場合
+      # 実際には選択できるかもしれないので、再計算する
+      reservation = Reservation.find(exclude_reservation_id)
+      reserved_date = reservation[:started_at].to_date # reservation_id に対応する 予約 の日付
+      if available_dates.exclude?(reserved_date) && Reservation.reservable_list(reserved_date, guest_number, exclude_reservation_id).any?
+        available_dates << reserved_date
+      end
+    end
+
     available_time = []
     # 日付が既に選択(present)されている場合において、予約人数を変更した時に予約可能時間を出す
     # !date.past? は過去の日付を弾く

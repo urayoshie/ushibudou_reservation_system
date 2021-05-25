@@ -203,7 +203,7 @@ class Reservation < ApplicationRecord
     reservable_array
   end
 
-  # 貸切予約が出来るかどうかの真��配列
+  # 貸切予約が出来るかどうかの真偽配列
   def self.choose_private_reservation(date, exclude_reservation_id = nil)
     # reservation_list = reserve_list(date)
     # available_seats_list = biggest_num_list(date)
