@@ -60,7 +60,9 @@ class ReservationsController < ApplicationController
 
   def available_dates
     guest_number = params["guest_number"].to_i
-    date = params["date"].to_date
+    date = params["date"]&.to_date
+    exclude_reservation_id = params[:exclude_reservation_id]&.to_i
+
     # available_dates = Reservation.show_string_date(guest_number)
 
     available_dates = Reservation.show_string_date(guest_number)
@@ -68,7 +70,7 @@ class ReservationsController < ApplicationController
     # 日付が既に選択(present)されている場合において、予約人数を変更した時に予約可能時間を出す
     # !date.past? は過去の日付を弾く
     if date.present? && !date.past?
-      available_time = calc_available_time(date, guest_number)
+      available_time = calc_available_time(date, guest_number, exclude_reservation_id)
       # elsif date.past?
       #   errors.add(:date, "適切な日付が選択されていません")
       # else：日付が選択されていない(presentでない)時に、入力された予約人数に対して予約可能日を出すのでavailable_timeには初期値のnilが入ってデータが渡る
@@ -78,8 +80,9 @@ class ReservationsController < ApplicationController
 
   def available_time
     # 1日単位で15:00~23:00の15分単位で予約可能な時間の配列(文字列)
-    guest_number = params["guest_number"].to_i
-    date = params["date"].to_date
+    guest_number = params[:guest_number].to_i
+    date = params[:date].to_date
+    exclude_reservation_id = params[:exclude_reservation_id]&.to_i
     # checked = params[:checked].present?
     # 貸切かどうか
     # reservable = ~~~~
@@ -115,7 +118,7 @@ class ReservationsController < ApplicationController
     available_time = []
     # 日付が既に選択(present)されている場合において、予約人数を変更した時に予約可能時間を出す
     if date.present? && !date.past?
-      available_time = calc_available_time(date, guest_number)
+      available_time = calc_available_time(date, guest_number, exclude_reservation_id)
     end
     # available_time = calc_available_time(date, guest_number)
     render json: { availableTime: available_time }
@@ -123,7 +126,7 @@ class ReservationsController < ApplicationController
 
   private
 
-  def calc_available_time(date, guest_number)
+  def calc_available_time(date, guest_number, exclude_reservation_id = nil)
     available_time = []
 
     # boolean_list = Reservation.display_available_time(date, guest_number)
@@ -136,7 +139,7 @@ class ReservationsController < ApplicationController
     # end
 
     # 人数を選択した場合(1日あたりの15:00~23:00の15分単位での予約受入の真偽判定)
-    boolean_list = Reservation.reservable_list(date, guest_number)
+    boolean_list = Reservation.reservable_list(date, guest_number, exclude_reservation_id)
     time = Time.new(date.year, date.mon, date.day, Reservation::START_TIME, 0, 0)
     boolean_list.each do |boolean|
       if date == Date.today
@@ -148,6 +151,7 @@ class ReservationsController < ApplicationController
       end
       time += 15.minute
     end
+
     available_time
   end
 

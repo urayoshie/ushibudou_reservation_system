@@ -1,6 +1,6 @@
 import Sortable from 'sortablejs';
 
-const menuSortable = () => {
+export const menuSortable = () => {
   const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
   new Sortable(menu, {
     draggable: '.menu-draggable',
@@ -34,5 +34,3 @@ const menuSortable = () => {
     },
   });
 };
-
-export { menuSortable };

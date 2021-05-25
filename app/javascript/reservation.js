@@ -4,7 +4,7 @@ import 'flatpickr/dist/l10n/ja';
 // カレンダーの色を変更
 import 'flatpickr/dist/themes/material_orange.css';
 
-export const reservationSystem =  () => {
+export const reservationSystem = () => {
   const calendar = document.getElementById('flatpickr');
   const numBox = document.getElementById('num-box');
   const timeBox = document.getElementById('time-box');
@@ -53,10 +53,24 @@ export const reservationSystem =  () => {
     }
   };
 
-  const changeAvailableDates = (open = true) => {
+  const buildUri = (baseUri) => {
     const guestNumber = numBox.value;
     const date = calendar.value;
-    fetch(`/reservations/available_dates?guest_number=${guestNumber}&date=${date}`)
+
+    const regex = /\/admin\/reservations\/(\d+)\/edit/;
+    const matched = location.pathname.match(regex);
+
+    let uri = `${baseUri}?guest_number=${guestNumber}`;
+
+    if (date) uri += `&date=${date}`;
+    if (matched) uri += `&exclude_reservation_id=${matched[1]}`;
+    return uri;
+  };
+
+  const changeAvailableDates = (open = true) => {
+    const uri = buildUri('/reservations/available_dates');
+
+    fetch(uri)
       .then((response) => response.json())
       .then((data) => {
         // カレンダーの選択できる日付を更新
@@ -85,9 +99,9 @@ export const reservationSystem =  () => {
   };
 
   const changeAvailableTime = () => {
-    const guestNumber = numBox.value;
-    const date = calendar.value;
-    fetch(`/reservations/available_time?guest_number=${guestNumber}&date=${date}`)
+    const uri = buildUri('/reservations/available_time');
+
+    fetch(uri)
       .then((response) => response.json())
       .then((data) => {
         insertAvailableTime(data.availableTime);
@@ -238,4 +252,4 @@ export const reservationSystem =  () => {
     // 「予約する」ボタンをクリックしたらcreateアクションにリクエストを出す
     reservationButton.addEventListener('click', sendReservationInfo, { passive: false });
   }
-}
+};

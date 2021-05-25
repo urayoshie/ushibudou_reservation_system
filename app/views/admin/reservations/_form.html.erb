@@ -18,8 +18,8 @@
     <%= form.text_field :started_date, id: "flatpickr", value: @reservation.started_at.to_date %>
   </div>
   <label for="time-box" id="reservation_time">予約時間</label>
-  <select name="started_time" id="time-box">
-    <option value="reservation-time"><%= l @reservation.started_at, format: :short %></option>
+  <select name="reservation[started_time]" id="time-box">
+    <option selected><%= l @reservation.started_at, format: :short %></option>
   </select>
   <div class="field">
     <%= form.label :name %>

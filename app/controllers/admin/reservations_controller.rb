@@ -3,7 +3,7 @@ class Admin::ReservationsController < Admin::AdminController
 
   def index
     reservation_range = Date.current..(Date.current + 1.month)
-    @reservations = Reservation.where(started_at: reservation_range)
+    @reservations = Reservation.where(started_at: reservation_range).order(:started_at)
   end
 
   def show
@@ -14,10 +14,12 @@ class Admin::ReservationsController < Admin::AdminController
 
   def update
     reservation = Reservation.find(params[:id])
+    reserved_date = reservation.started_at.to_date
     ActiveRecord::Base.transaction do
-      reservation = Reservation.update!(reservation_params)
-      reservation_date = reservation.started_at.to_date
-      ReservationStatus.update_reservation_status!(reservation_date)
+      reservation.update!(reservation_params)
+      updated_date = reservation.started_at.to_date
+      ReservationStatus.update_reservation_status!(reserved_date)
+      ReservationStatus.update_reservation_status!(updated_date)
     end
     redirect_to admin_reservation_path
   end
@@ -34,6 +36,10 @@ class Admin::ReservationsController < Admin::AdminController
   end
 
   def reservation_params
-    params.require(:reservation).permit(:guest_number, :started_date, :started_time, :name, :email, :phone_number, :request)
+    params.require(:reservation).permit(:guest_number, :name, :email, :phone_number, :request).merge(build_started_at)
+  end
+
+  def build_started_at
+    { started_at: Time.zone.parse("#{params[:reservation][:started_date]} #{params[:reservation][:started_time]}") }
   end
 end
