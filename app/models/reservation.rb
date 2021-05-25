@@ -49,7 +49,7 @@ class Reservation < ApplicationRecord
   end
 
   # 予約人数と貸切予約かどうかの1日単位(15:00~24:45)の配列ハッシュデータ
-  def self.reserve_list(date)
+  def self.reserve_list(date, exclude_reservation_id = nil)
     # beginning_of_day = date.beginning_of_day
     # end_of_day = date.end_of_day
 
@@ -65,7 +65,6 @@ class Reservation < ApplicationRecord
 
     # # それぞれの時間の予約の合計人数
     # where(started_at: beginning_of_day..end_of_day).each do |reservation|
-    #   binding.pry
     #   start_index = (reservation.started_at - beginning_of_day).floor / 60 / TERM
     #   # list2 = list[start_index][:number]
     #   8.times do |i|
@@ -77,7 +76,7 @@ class Reservation < ApplicationRecord
       reservation_list << { total_number: 0, private_reservation: false }
     end
 
-    where(started_at: beginning_of_day..end_of_day).each do |reservation|
+    where(started_at: beginning_of_day..end_of_day).where.not(id: exclude_reservation_id).each do |reservation|
       start_index = (reservation.started_at - beginning_of_day).floor / 60 / TERM
       8.times do |i|
         reservation_params = reservation_list[start_index + i]
@@ -117,8 +116,8 @@ class Reservation < ApplicationRecord
   # end
 
   # 1日(15:00~23:00)2時間単位での予約最大人数と貸切予約の有無の配列ハッシュデータ
-  def self.biggest_num_list(date)
-    reservation_list = reserve_list(date)
+  def self.biggest_num_list(date, exclude_reservation_id = nil)
+    reservation_list = reserve_list(date, exclude_reservation_id)
 
     biggest_number_list = []
 
@@ -144,7 +143,6 @@ class Reservation < ApplicationRecord
       biggest_number_list << { biggest_number: biggest_number, private_reservation_exists: private_reservation, error: error }
     end
     biggest_number_list
-    # binding.pry
   end
 
   # # 空き人数と貸切予約の有無の1日単位(15:00~23:00)の配列ハッシュデータ
@@ -177,12 +175,12 @@ class Reservation < ApplicationRecord
   # end
 
   # 1日あたりの15:00~23:00の15分単位での予約受入の真偽判定
-  def self.display_available_time(date, guest_number)
+  def self.display_available_time(date, guest_number, exclude_reservation_id = nil)
     # array = reservable_num_list(date)
     reservable_array = []
     # biggest_num_list(date)
 
-    biggest_num_list(date).map do |data|
+    biggest_num_list(date, exclude_reservation_id).map do |data|
       # if guest_number <= data[:reservable_number] && data[:private_reservation_exists] == false
       #   reservable_array << true
       # else
@@ -201,18 +199,17 @@ class Reservation < ApplicationRecord
     #   else
     #     array << false
     #   end
-    #   binding.pry
     # end
     reservable_array
   end
 
   # 貸切予約が出来るかどうかの真��配列
-  def self.choose_private_reservation(date)
+  def self.choose_private_reservation(date, exclude_reservation_id = nil)
     # reservation_list = reserve_list(date)
     # available_seats_list = biggest_num_list(date)
 
     reservable_private_reservation = []
-    biggest_num_list(date).map do |data|
+    biggest_num_list(date, exclude_reservation_id).map do |data|
       # if data[:reservable_number] == MAXIMUM_GUEST_NUMBER
       #   reservable_private_reservation << true
       # else
@@ -225,12 +222,12 @@ class Reservation < ApplicationRecord
     reservable_private_reservation
   end
 
-  def self.reservable_list(date, guest_number)
+  def self.reservable_list(date, guest_number, exclude_reservation_id = nil)
     # 6人以上なら貸切用のメソッド, 6人未満なら人数用のメソッド
     if guest_number >= 6
-      choose_private_reservation(date)
+      choose_private_reservation(date, exclude_reservation_id)
     else
-      display_available_time(date, guest_number)
+      display_available_time(date, guest_number, exclude_reservation_id)
     end
   end
 

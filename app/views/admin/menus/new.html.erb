@@ -1,5 +1,10 @@
 <div class="menu_new">
   <h1>新規メニュー投稿</h1>
   <%= render 'form', menu: @menu, url: admin_menus_path %>
-  <%= link_to '戻る', admin_menus_path %>
+  <div class="menu-index">
+    <%= link_to 'メニュー一覧', admin_menus_path %>
+  </div>
+  <div classs="home">
+    <%= link_to '管理画面トップページ', admin_root_path %>
+  </div>
 </div>

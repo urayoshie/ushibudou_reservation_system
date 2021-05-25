@@ -7,8 +7,7 @@ class ReservationStatus < ApplicationRecord
   validates :minimum_total_num, presence: true, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 12 }
   validates :date, presence: true, uniqueness: true  #, :format {with: VALID_DATE_REGEX}
 
-  def self.update_reservation_status!(reservation)
-    date = reservation.started_at.to_date
+  def self.update_reservation_status!(date)
     # biggest_num_list を呼び出す
     biggest_list = Reservation.biggest_num_list(date)
     error = biggest_list.any? { |data| data[:error] }

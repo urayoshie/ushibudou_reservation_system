@@ -3,7 +3,6 @@
 </header>
 <div class="container">
   <h2>ご予約条件を入力してください :  </h2>
-
   <div class="guest_num">
     <label for="num-box" id="guest_num">予約人数</label>
     <select name="pull-down" id="num-box">
@@ -11,23 +10,19 @@
         <option value="<%=number%>"<%= " selected" if number == 2%> ><%=number%>名</option>
       <% end %>
     </select>
-    </div>
-  
-    <p class="notification">※ 6名様以上のご予約は貸切となります</p>
-    <%# <form action="cgi-bin/abc.cgi" method="post"> %>
-    <%# <label><input type="checkbox" name="private" value="1" id="check" disabled onchange="">貸切</label> %>
-    <div class="reservation_date">
+  </div>
+  <p class="notification">※ 6名様以上のご予約は貸切となります</p>
+  <%# <form action="cgi-bin/abc.cgi" method="post"> %>
+  <%# <label><input type="checkbox" name="private" value="1" id="check" disabled onchange="">貸切</label> %>
+  <div class="reservation_date">
     <label for="calendar" id="reservation_date">予約日</label>
     <input type="text" id="flatpickr">
-    </div>
-    
-    
-    <label for="time-box" id="reservation_time">予約時間</label>
-    <select name="pull-down" id="time-box"></select>
-    <div class="check">
-      <button id="modal-button" disabled>予約へ進む</button>
-    </div>
+  </div>
+  <label for="time-box" id="reservation_time">予約時間</label>
+  <select name="started_time" id="time-box"></select>
+  <div class="check">
+    <button id="modal-button" disabled>予約へ進む</button>
+  </div>
 </div>
-
 <footer><small>© 2021 Ushibudou</small></footer>
 <%= render 'modal' %>

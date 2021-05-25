@@ -1,0 +1,45 @@
+class Admin::ReservationsController < Admin::AdminController
+  before_action :set_reservation, only: %i[ show edit destroy ]
+
+  def index
+    reservation_range = Date.current..(Date.current + 1.month)
+    @reservations = Reservation.where(started_at: reservation_range).order(:started_at)
+  end
+
+  def show
+  end
+
+  def edit
+  end
+
+  def update
+    reservation = Reservation.find(params[:id])
+    reserved_date = reservation.started_at.to_date
+    ActiveRecord::Base.transaction do
+      reservation.update!(reservation_params)
+      updated_date = reservation.started_at.to_date
+      ReservationStatus.update_reservation_status!(reserved_date)
+      ReservationStatus.update_reservation_status!(updated_date)
+    end
+    redirect_to admin_reservation_path
+  end
+
+  def destroy
+    @reservation.destroy!
+    redirect_to admin_reservations_path, notice: "Reservation was successfully destroyed."
+  end
+
+  private
+
+  def set_reservation
+    @reservation = Reservation.find(params[:id])
+  end
+
+  def reservation_params
+    params.require(:reservation).permit(:guest_number, :name, :email, :phone_number, :request).merge(build_started_at)
+  end
+
+  def build_started_at
+    { started_at: Time.zone.parse("#{params[:reservation][:started_date]} #{params[:reservation][:started_time]}") }
+  end
+end

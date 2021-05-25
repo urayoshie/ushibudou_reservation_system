@@ -1,5 +1,5 @@
 .log_out {
-  margin-left: 180px;
+  margin-left: 130px;
   margin-top: 40px;
   text-decoration: none;
 }
@@ -33,6 +33,14 @@ tr:nth-child(odd) {
 }
 
 // メニューテーブル
+// .list {
+//   margin-left: 130px;
+// }
+
+.menu {
+  margin-left: 130px;
+}
+
 .menu-draggable {
   display: table;
 }
@@ -54,4 +62,45 @@ tr:nth-child(odd) {
 .menu-edit,
 .menu-delete {
   text-align: center;
+}
+
+.new-menu {
+  margin-left: 130px;
+}
+
+@media screen and (max-width: 767px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  .list {
+    margin-left: 5px;
+  }
+
+  .menu {
+    margin-left: 5px;
+  }
+
+  .log_out {
+    margin-left: 5px;
+  }
+
+  .new-menu {
+    margin-left: 5px;
+  }
+}
+
+// @media screen and (max-width: 480px) {
+
+// }
+
+// メニュー新規投稿
+.menu_new {
+  margin-left: 70px;
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
 }

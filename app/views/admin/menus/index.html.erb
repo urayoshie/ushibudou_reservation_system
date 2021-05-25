@@ -1,6 +1,5 @@
-<p id="notice"><%= notice %></p>
 <h1 class="list">メニュー管理</h1>
-<div id="menu">
+<div class="menu">
   <div class="menu_list" style="display: flex;">
     <div class="title">ジャンル</div>
     <div class="title">商品名</div>
@@ -18,4 +17,6 @@
     </div>
   <% end %>
 </div>
-<%= link_to '新規メニュー投稿', new_admin_menu_path %>
+<div class="new-menu">
+  <%= link_to '新規メニュー投稿', new_admin_menu_path %>
+</div>
