@@ -15,14 +15,14 @@ class Reservation < ApplicationRecord
   PAST_ERROR_MESSAGE = "本日以降の日付を選択してください"
   # AFTER_THREE_MONTHS_ERROR_MESSAGE = "本日より#{PERIOD_MONTH.in_months.round}ヶ月未満の日付を選択してください"
 
-  validates :guest_number, :started_at, presence: true
+  validates :guest_number, :start_at, presence: true
   validates :name, presence: true, length: { maximum: 50 }
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX }
   validates :phone_number, presence: true, format: { with: VALID_PHONE_NUMBER_REGEX }
   validates :request, length: { maximum: 300 }
-  # started_at は 15時〜23時以外はいらない様にバリデーションを入れる
-  validates_time :started_at, between: ["15:00", "23:00"]
+  # start_at は 15時〜23時以外はいらない様にバリデーションを入れる
+  validates_time :start_at, between: ["15:00", "23:00"]
   # 15分毎(0, 15, 30, 45)以外はいらない様にバリデーションを入れる
   validate :min_only
   # 本日以前の日付は入らないようにする
@@ -33,19 +33,19 @@ class Reservation < ApplicationRecord
   PERMITTED_MINUTES = [0, 15, 30, 45]
 
   def min_only
-    if PERMITTED_MINUTES.include?(started_at.min)
+    if PERMITTED_MINUTES.include?(start_at.min)
       true
     else
-      errors.add(:started_at, "must be 0, 15, 30, and 45")
+      errors.add(:start_at, "must be 0, 15, 30, and 45")
     end
   end
 
   def date_before_start
-    errors.add(:started_at, PAST_ERROR_MESSAGE) if started_at < Date.today
+    errors.add(:start_at, PAST_ERROR_MESSAGE) if start_at < Date.today
   end
 
   def date_after_three_months
-    errors.add(:started_at, AFTER_THREE_MONTHS_ERROR_MESSAGE) if started_at > (Date.today + PERIOD_MONTH)
+    errors.add(:start_at, AFTER_THREE_MONTHS_ERROR_MESSAGE) if start_at > (Date.today + PERIOD_MONTH)
   end
 
   # 予約人数と貸切予約かどうかの1日単位(15:00~24:45)の配列ハッシュデータ
@@ -64,8 +64,8 @@ class Reservation < ApplicationRecord
     # end
 
     # # それぞれの時間の予約の合計人数
-    # where(started_at: beginning_of_day..end_of_day).each do |reservation|
-    #   start_index = (reservation.started_at - beginning_of_day).floor / 60 / TERM
+    # where(start_at: beginning_of_day..end_of_day).each do |reservation|
+    #   start_index = (reservation.start_at - beginning_of_day).floor / 60 / TERM
     #   # list2 = list[start_index][:number]
     #   8.times do |i|
     #     list[start_index + i][:number] += reservation.guest_number
@@ -76,8 +76,8 @@ class Reservation < ApplicationRecord
       reservation_list << { total_number: 0, private_reservation: false }
     end
 
-    where(started_at: beginning_of_day..end_of_day).where.not(id: exclude_reservation_id).each do |reservation|
-      start_index = (reservation.started_at - beginning_of_day).floor / 60 / TERM
+    where(start_at: beginning_of_day..end_of_day).where.not(id: exclude_reservation_id).each do |reservation|
+      start_index = (reservation.start_at - beginning_of_day).floor / 60 / TERM
       8.times do |i|
         reservation_params = reservation_list[start_index + i]
         if reservation.guest_number >= ACCEPTABLE_PRIVATE_NUMBER
@@ -111,7 +111,7 @@ class Reservation < ApplicationRecord
   end
   # def list
   #   (0..7).map do |i|
-  #     { time: started_at + TERM.minute * i, number: guest_number }
+  #     { time: start_at + TERM.minute * i, number: guest_number }
   #   end
   # end
 
@@ -241,7 +241,7 @@ class Reservation < ApplicationRecord
 
   # 今日から3ヶ月までの期間、予約可能な日付を文字列で配列に格納
   def self.show_string_date(guest_number)
-    # reserved_date_list = Reservation.where(started_at: Date.current..(Date.current + 3.months)).distinct.pluck(:started_at).map(&:to_date).uniq
+    # reserved_date_list = Reservation.where(start_at: Date.current..(Date.current + 3.months)).distinct.pluck(:start_at).map(&:to_date).uniq
 
     reservable_date_range = Date.current..(Date.current + PERIOD_MONTH)
 

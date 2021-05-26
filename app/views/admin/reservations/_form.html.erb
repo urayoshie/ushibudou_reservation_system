@@ -15,11 +15,11 @@
   </div>
   <div class="reservation_date">
     <%= form.label :started_date, "予約日" %>
-    <%= form.text_field :started_date, id: "flatpickr", value: @reservation.started_at.to_date %>
+    <%= form.text_field :started_date, id: "flatpickr", value: @reservation.start_at.to_date %>
   </div>
   <label for="time-box" id="reservation_time">予約時間</label>
   <select name="reservation[started_time]" id="time-box">
-    <option selected><%= l @reservation.started_at, format: :short %></option>
+    <option selected><%= l @reservation.start_at, format: :short %></option>
   </select>
   <div class="field">
     <%= form.label :name %>

@@ -14,7 +14,7 @@ ja:
         name: 商品名
         price: 価格
       reservation:
-        started_at: 予約日時
+        start_at: 予約日時
         name: 予約名
         guest_number: 予約人数
         email: メールアドレス

@@ -196,7 +196,7 @@ export const reservationSystem = () => {
         guest_number: numBox.value,
         // date: calendar.value,
         // time: timeBox.value,
-        started_at: `${calendar.value} ${timeBox.value}`,
+        start_at: `${calendar.value} ${timeBox.value}`,
       },
     };
 
