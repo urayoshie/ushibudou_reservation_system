@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_26_003028) do
+ActiveRecord::Schema.define(version: 2021_05_27_022158) do
 
   create_table "admin_users", charset: "utf8mb4", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -29,8 +29,8 @@ ActiveRecord::Schema.define(version: 2021_05_26_003028) do
   create_table "default_business_days", charset: "utf8mb4", force: :cascade do |t|
     t.date "applicable_date", null: false
     t.integer "wday", null: false
-    t.datetime "start_at"
-    t.datetime "end_at"
+    t.integer "start_at"
+    t.integer "end_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -73,8 +73,8 @@ ActiveRecord::Schema.define(version: 2021_05_26_003028) do
 
   create_table "temporary_dates", charset: "utf8mb4", force: :cascade do |t|
     t.date "date", null: false
-    t.datetime "start_at"
-    t.datetime "end_at"
+    t.integer "start_at"
+    t.integer "end_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["date"], name: "index_temporary_dates_on_date", unique: true

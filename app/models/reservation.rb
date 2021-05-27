@@ -2,6 +2,8 @@ class Reservation < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   # VALID_PHONE_NUMBER_REGEX = /\A0(\d{1}[-(]?\d{4}|\d{2}[-(]?\d{3}|\d{3}[-(]?\d{2}|\d{4}[-(]?\d{1})[-)]?\d{4}\z|\A0[5789]0[-]?\d{4}[-]?\d{4}\z/
   VALID_PHONE_NUMBER_REGEX = /\A0\d{1,3}-?\d{2,4}-?\d{3,4}\z/
+
+  DEFAULT_DATETIME = Time.zone.local(2000, 1, 1, 0, 0, 0)
   TERM = 15
   START_TIME = 15
   END_TIME = 25
@@ -32,6 +34,7 @@ class Reservation < ApplicationRecord
 
   PERMITTED_MINUTES = [0, 15, 30, 45]
 
+  ###### バリデーション ######
   def min_only
     if PERMITTED_MINUTES.include?(start_at.min)
       true
@@ -48,12 +51,28 @@ class Reservation < ApplicationRecord
     errors.add(:start_at, AFTER_THREE_MONTHS_ERROR_MESSAGE) if start_at > (Date.today + PERIOD_MONTH)
   end
 
+  ###### クラスメソッド ######
+  # 引数の日付の「営業時間」を取得するメソッド
+  def self.fetch_business_hours(date)
+    temporary_date = TemporaryDate.find_by(date: date)
+    if temporary_date
+      return [temporary_date[:start_at] - DEFAULT_DATE, temporary_date[:end_at] - DEFAULT_DATE]
+    end
+
+    business_day = DefaultBusinessDay.order(created_at: :desc).where(wday: date.wday).find_by("applicable_date <= ?", date)
+    if business_day
+      return [business_day[:start_at] - DEFAULT_DATE, business_day[:end_at] - DEFAULT_DATE]
+    end
+
+    nil
+  end
+
   # 予約人数と貸切予約かどうかの1日単位(15:00~24:45)の配列ハッシュデータ
-  def self.reserve_list(date, exclude_reservation_id = nil)
+  def self.reserve_list(datetime, exclude_reservation_id = nil)
     # beginning_of_day = date.beginning_of_day
     # end_of_day = date.end_of_day
 
-    date = date.beginning_of_day
+    date = datetime.beginning_of_day
 
     beginning_of_day = date + START_TIME.hours
     end_of_day = date + END_TIME.hours
@@ -174,7 +193,7 @@ class Reservation < ApplicationRecord
   #   available_seats_list
   # end
 
-  # 1日あたりの15:00~23:00の15分単位での予約受入の真偽判定
+  # 1日あたりの15:00~23:00の15��単位での予約受入の真偽判定
   def self.display_available_time(date, guest_number, exclude_reservation_id = nil)
     # array = reservable_num_list(date)
     reservable_array = []

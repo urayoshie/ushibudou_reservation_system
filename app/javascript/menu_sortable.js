@@ -2,7 +2,8 @@ import Sortable from 'sortablejs';
 
 export const menuSortable = () => {
   const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-  new Sortable(menu, {
+  const sortableTarget = document.querySelector('.menu');
+  new Sortable(sortableTarget, {
     draggable: '.menu-draggable',
     animation: 150,
     ghostClass: 'blue-background-class',
@@ -11,7 +12,7 @@ export const menuSortable = () => {
         name: e.item.querySelector('.menu-name').textContent,
         new_index: e.newIndex,
       };
-      fetch(`/menus/${e.oldIndex}`, {
+      fetch(`/admin/sortable_menus/${e.oldIndex}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
