@@ -8,7 +8,7 @@
 require "date"
 require "csv"
 
-%w[reservations reservation_statuses menus default_business_days temporary_dates].each do |table_name|
+%w[reservations reservation_statuses menus day_conditions temporary_dates].each do |table_name|
   ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
 end
 
@@ -29,28 +29,35 @@ end
 #   }
 # end
 
-# default_business_days
+# day_conditions
 date = Date.new(2021, 5, 26)
-DefaultBusinessDay.create!(applicable_date: date, wday: 0, start_at: "2000-01-01 15:00", end_at: "2000-01-02 01:00")
-DefaultBusinessDay.create!(applicable_date: date, wday: 1, start_at: "2000-01-01 15:00", end_at: "2000-01-02 01:00")
-# DefaultBusinessDay.create!(applicable_date: date, wday: 2, start_at: nil, end_at: nil)
-DefaultBusinessDay.create!(applicable_date: date, wday: 3, start_at: "2000-01-01 15:00", end_at: "2000-01-02 01:00")
-DefaultBusinessDay.create!(applicable_date: date, wday: 4, start_at: "2000-01-01 15:00", end_at: "2000-01-02 01:00")
-DefaultBusinessDay.create!(applicable_date: date, wday: 5, start_at: "2000-01-01 15:00", end_at: "2000-01-02 01:00")
-DefaultBusinessDay.create!(applicable_date: date, wday: 6, start_at: "2000-01-01 15:00", end_at: "2000-01-02 01:00")
+DayCondition.create!(applicable_date: date, wday: 0, start_min: 900, end_min: 1500)
+DayCondition.create!(applicable_date: date, wday: 1, start_min: 900, end_min: 1500)
+DayCondition.create!(applicable_date: date, wday: 2, start_min: nil, end_min: nil)
+DayCondition.create!(applicable_date: date, wday: 3, start_min: 900, end_min: 1500)
+DayCondition.create!(applicable_date: date, wday: 4, start_min: 900, end_min: 1500)
+DayCondition.create!(applicable_date: date, wday: 5, start_min: 900, end_min: 1500)
+DayCondition.create!(applicable_date: date, wday: 6, start_min: 900, end_min: 1500)
 
-date2 = Date.new(2021, 6, 20)
-DefaultBusinessDay.create!(applicable_date: date2, wday: 0, start_at: "2000-01-01 15:00", end_at: "2000-01-02 20:00")
+date2 = Date.new(2021, 6, 23)
+DayCondition.create!(applicable_date: date2, wday: 0, start_min: 900, end_min: 1200)
+DayCondition.create!(applicable_date: date2, wday: 3, start_min: nil, end_min: nil)
+
+date3 = Date.new(2021, 7, 21)
+DayCondition.create!(applicable_date: date3, wday: 3, start_min: 900, end_min: 1200)
+
+# date4 = Date.new(2021, 7, 1)
+# DayCondition.create!(applicable_date: date4, wday: 3, start_min: 900, end_min: 1200)
 
 # temporary_dates
 # 臨時営業日
-TemporaryDate.create!(date: Date.new(2021, 6, 2), start_at: "2000-01-01 11:00", end_at: "2000-01-02 01:00")
-TemporaryDate.create!(date: Date.new(2021, 6, 25), start_at: "2000-01-01 11:30", end_at: "2000-01-02 01:00")
-TemporaryDate.create!(date: Date.new(2021, 8, 10), start_at: "2000-01-01 11:30", end_at: "2000-01-02 01:00")
+TemporaryDate.create!(date: Date.new(2021, 6, 2), start_min: 660, end_min: 1500)
+TemporaryDate.create!(date: Date.new(2021, 6, 25), start_min: 690, end_min: 1500)
+TemporaryDate.create!(date: Date.new(2021, 8, 10), start_min: 690, end_min: 1500)
 # 臨時休業日
-TemporaryDate.create!(date: Date.new(2021, 8, 13), start_at: nil, end_at: nil)
-TemporaryDate.create!(date: Date.new(2021, 8, 14), start_at: nil, end_at: nil)
-TemporaryDate.create!(date: Date.new(2021, 8, 15), start_at: nil, end_at: nil)
+TemporaryDate.create!(date: Date.new(2021, 8, 13), start_min: nil, end_min: nil)
+TemporaryDate.create!(date: Date.new(2021, 8, 14), start_min: nil, end_min: nil)
+TemporaryDate.create!(date: Date.new(2021, 8, 15), start_min: nil, end_min: nil)
 
 puts "デフォルトの営業日データを投入しました。"
 

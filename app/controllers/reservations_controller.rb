@@ -149,7 +149,8 @@ class ReservationsController < ApplicationController
 
     # 人数を選択した場合(1日あたりの15:00~23:00の15分単位での予約受入の真偽判定)
     boolean_list = Reservation.reservable_list(date, guest_number, exclude_reservation_id)
-    time = Time.new(date.year, date.mon, date.day, Reservation::START_TIME, 0, 0)
+    start_min, end_min = Reservation.fetch_business_hours(date)
+    time = date.beginning_of_day + start_min.minutes
     boolean_list.each do |boolean|
       if date == Date.today
         if boolean && time > Time.current

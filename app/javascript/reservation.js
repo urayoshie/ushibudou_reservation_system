@@ -50,6 +50,8 @@ export const reservationSystem = () => {
     const index = availableTime.indexOf(time);
     if (index >= 0) {
       timeBox.selectedIndex = index + 1;
+    } else {
+      modalButton.disabled = true;
     }
   };
 
