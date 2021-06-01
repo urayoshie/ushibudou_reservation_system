@@ -36,5 +36,7 @@ module UshibudouReservationSystem
     config.generators.system_tests = nil
     config.i18n.default_locale = :ja
     config.time_zone = "Tokyo"
+    # lib/autoloads ディレクトリ配下のファイルを読み込む
+    config.autoload_paths << Rails.root.join("lib/autoloads")
   end
 end

@@ -38,7 +38,7 @@ gem 'carrierwave', '~> 2.0'
 gem 'mini_magick'
 
 # 15時〜23時以外は入力できない様にバリデーションを入れる為のもの
-gem 'validates_timeliness', '~> 6.0.0.alpha1'
+# gem 'validates_timeliness', '~> 6.0.0.alpha1'
 
 # 連番
 gem 'acts_as_list'

@@ -1,0 +1,36 @@
+class ConvertTime
+  MINUTES_PER_HOUR = 60
+  PER_MIN = 15
+  LIMITE_UNITS = 8
+  RESERVED_MIN = PER_MIN * LIMITE_UNITS
+
+  class << self
+    # "06:30" --> 390
+    # "15:00" --> 900
+    def to_min(time)
+      time.split(":").map(&:to_i).inject { |hour, min| hour * 60 + min }
+    end
+
+    # 390 --> "06:30"
+    def to_time(min)
+      hour = two_digits(min / 60)
+      minute = two_digits(min % 60)
+      "#{hour}:#{minute}"
+    end
+
+    def total_units(start_min, end_min)
+      (end_min - start_min) / PER_MIN
+    end
+
+    # 2700(s) --> 45(min) --> 3(units)
+    def sec_to_unit(sec)
+      sec / MINUTES_PER_HOUR / PER_MIN
+    end
+
+    private
+
+    def two_digits(num)
+      num.to_s.rjust(2, "0")
+    end
+  end
+end

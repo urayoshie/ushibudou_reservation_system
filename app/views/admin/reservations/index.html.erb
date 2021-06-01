@@ -15,8 +15,8 @@
   <tbody>
     <% @reservations.each do |reservation| %>
       <tr>
-        <td><%= l reservation.started_at, format: :date %></td>
-        <td><%= l reservation.started_at, format: :short %></td>
+        <td><%= l reservation.start_at, format: :date %></td>
+        <td><%= l reservation.start_at, format: :short %></td>
         <td><%= reservation.name %></td>
         <td><%= reservation.guest_number %></td>
         <td><%= link_to '詳細', admin_reservation_path(reservation) %></td>
