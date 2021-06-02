@@ -1,94 +1,87 @@
 class Reservation < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  # VALID_PHONE_NUMBER_REGEX = /\A0(\d{1}[-(]?\d{4}|\d{2}[-(]?\d{3}|\d{3}[-(]?\d{2}|\d{4}[-(]?\d{1})[-)]?\d{4}\z|\A0[5789]0[-]?\d{4}[-]?\d{4}\z/
   VALID_PHONE_NUMBER_REGEX = /\A0\d{1,3}-?\d{2,4}-?\d{3,4}\z/
 
-  # PER_MIN = 15
-  # LIMITE_MIN = 120
-
-  # START_TIME = 15
-  # END_TIME = 25
-  # LASTORDER_TIME = 23
-  # WHOLEDAY_COUNT = (END_TIME - START_TIME) * (60 / PER_MIN)
-  # TILL_LASTORSER_COUNT = (LASTORDER_TIME - START_TIME) * (60 / PER_MIN) + 1
-  # PERMITTED_MINUTES = [0, 15, 30, 45]
   MAXIMUM_GUEST_NUMBER = 12
   ACCEPTABLE_PRIVATE_NUMBER = 6
+  UNIT_MIN = ConvertTime::UNIT_MIN  # 15
+  LIMITE_UNITS = 8
+  RESERVED_MIN = UNIT_MIN * LIMITE_UNITS
   DEFAULT_START_MIN = 900
   DEFAULT_END_MIN = 1500
 
+  # 予約できる期間
   PERIOD_MONTH = 3.months
 
   PAST_ERROR_MESSAGE = "は本日以降の日付を選択してください"
-  AFTER_THREE_MONTHS_ERROR_MESSAGE = "は本日より#{PERIOD_MONTH.in_months.round}ヶ月未満の日付を選択してください"
+  PAST_MONTHS_ERROR_MESSAGE = "は本日より#{PERIOD_MONTH.in_months.round}ヶ月未満の日付を選択してください"
   CLOSED_MESSAGE = "は営業日を選択してください"
-  UNIT_MESSAGE = "は#{ConvertTime::PER_MIN}分ごとの時間を選択してください"
+  UNIT_MESSAGE = "は#{UNIT_MIN}分ごとの時間を選択してください"
   CLOSED_HOURS_MESSAGE = "は営業時間内で選択してください"
 
-  validates :guest_number, :start_at, presence: true
+  validates :guest_number, :date, :start_min, presence: true
   validates :name, presence: true, length: { maximum: 50 }
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX }
   validates :phone_number, presence: true, format: { with: VALID_PHONE_NUMBER_REGEX }
   validates :request, length: { maximum: 300 }
 
-  # start_at は 15時〜23時以外はいらない様にバリデーションを入れる
-  # validates_time :start_at, between: ["15:00", "23:00"]
-  # 15分毎(0, 15, 30, 45)以外はいらない様にバリデーションを入れる
-  # validate :min_only
   # 本日以前の日付は入らないようにする
   validate :date_before_start
   # 本日から3ヶ月目以降の日付は入らないようにする
-  validate :date_after_three_months
+  validate :past_date
+  # start_min は15の倍数
+  validate :per_unit_min
   # start_at が 営業日 かつ 開始時間〜終了時間(15×8 分前) かつ 15分区切り であること
   validate :within_business_hours
 
+  def start_time
+    date.in_time_zone + start_min.minutes
+  end
+
   ###### バリデーション ######
-  def min_only
-    # if PERMITTED_MINUTES.include?(start_at.min)
-    #   true
-    # else
-    #   errors.add(:start_at, "must be 0, 15, 30, and 45")
-    # end
-  end
-
   def date_before_start
-    errors.add(:start_at, PAST_ERROR_MESSAGE) if start_at < Date.today
+    if date < Date.current
+      errors.add(:date, PAST_ERROR_MESSAGE)
+    end
   end
 
-  def date_after_three_months
-    errors.add(:start_at, AFTER_THREE_MONTHS_ERROR_MESSAGE) if start_at > (Date.today + PERIOD_MONTH)
+  def past_date
+    if date > Date.current + PERIOD_MONTH
+      errors.add(:date, PAST_MONTHS_ERROR_MESSAGE)
+    end
+  end
+
+  def per_unit_min
+    unless start_min % UNIT_MIN == 0
+      errors.add(:start_min, UNIT_MESSAGE)
+    end
   end
 
   def within_business_hours
-    start_min, end_min = Reservation.fetch_business_hours(start_at)
+    start_min, end_min = Reservation.fetch_business_hours(date)
     if start_min.nil? || end_min.nil?
-      errors.add(:start_at, CLOSED_MESSAGE) and return
+      errors.add(:start_min, CLOSED_MESSAGE) and return
     end
 
-    limit_min = end_min - ConvertTime::RESERVED_MIN
-    chosen_min = ConvertTime.to_min(start_at.strftime("%H:%M"))
+    limit_min = end_min - RESERVED_MIN
+    chosen_min = self.start_min
 
-    if start_min.nil?
-      errors.add(:start_at, CLOSED_MESSAGE)
-    elsif chosen_min % ConvertTime::PER_MIN != 0
-      errors.add(:start_at, UNIT_MESSAGE)
-    elsif start_min > chosen_min || chosen_min > limit_min
-      errors.add(:start_at, CLOSED_HOURS_MESSAGE)
+    if start_min > chosen_min || chosen_min > limit_min
+      errors.add(:start_min, CLOSED_HOURS_MESSAGE)
     end
   end
 
   ###### クラスメソッド ######
   class << self
     # 引数の日付の「営業時間」を取得するメソッド
-    def fetch_business_hours(datetime)
-      date = datetime.to_date
+    def fetch_business_hours(date)
       temporary_date = TemporaryDate.find_by(date: date)
       if temporary_date
         return [temporary_date[:start_min], temporary_date[:end_min]]
       end
 
-      business_day = DayCondition.order(created_at: :desc).where(wday: date.wday).find_by("applicable_date <= ?", date)
+      business_day = DayCondition.order(applicable_date: :desc).where(wday: date.wday).find_by("applicable_date <= ?", date)
       if business_day
         return [business_day[:start_min], business_day[:end_min]]
       end
@@ -132,12 +125,12 @@ class Reservation < ApplicationRecord
 
       error = false
       # list = (0..count).map do |i|
-      #   { time: beginning_of_day + (i * PER_MIN).minute, number: 0 }
+      #   { time: beginning_of_day + (i * UNIT_MIN).minute, number: 0 }
       # end
 
       # # それぞれの時間の予約の合計人数
       # where(start_at: beginning_of_day..end_of_day).each do |reservation|
-      #   start_unit = (reservation.start_at - beginning_of_day).floor / 60 / PER_MIN
+      #   start_unit = (reservation.start_at - beginning_of_day).floor / 60 / UNIT_MIN
       #   # list2 = list[start_unit][:number]
       #   8.times do |i|
       #     list[start_unit + i][:number] += reservation.guest_number
@@ -179,14 +172,14 @@ class Reservation < ApplicationRecord
       end
 
       # list = total_numbers.map.with_index do |total_number, i|
-      #   { time: beginning_of_day + (i * PER_MIN).minute, total_number: total_number }
+      #   { time: beginning_of_day + (i * UNIT_MIN).minute, total_number: total_number }
       # end
       reservation_list
     end
 
     # def list
     #   (0..7).map do |i|
-    #     { time: start_at + PER_MIN.minute * i, number: guest_number }
+    #     { time: start_at + UNIT_MIN.minute * i, number: guest_number }
     #   end
     # end
 
@@ -202,7 +195,7 @@ class Reservation < ApplicationRecord
         biggest_number = list.max_by { |k| k[:total_number] }[:total_number]
 
         # reservable_num_list(datetime)���12から引いたものでは���いものにしたいので以下1行を外す
-        # 12か��引いたもののリストはまた別でメソッドを作る
+        # 12か��引いたもののリスト���また別でメソッドを作る
         # reservable_number = MAXIMUM_GUEST_NUMBER - biggest_number
 
         # boolean_list = list.map { |data| data[:private_reservation] }
