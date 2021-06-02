@@ -1,0 +1,8 @@
+<p style="padding-bottom: 2rem;">
+  <%= @days[wday] %>
+  <input type="hidden" name="day_conditions[][wday]" value="<%= wday %>">
+  <input type="checkbox" name="day_conditions[][open]" id="day-conditions-<%= wday %>-open" checked>
+  <div class="slider" data-wday="<%= wday %>" data-start="<%= Reservation::DEFAULT_START_MIN %>" data-end="<%= Reservation::DEFAULT_END_MIN %>"></div>
+  <input type="hidden" name="day_conditions[][start_min]" id="day-conditions-<%= wday %>-start">
+  <input type="hidden" name="day_conditions[][end_min]" id="day-conditions-<%= wday %>-end">
+</p>
