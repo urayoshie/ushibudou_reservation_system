@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root "reservations#index"
   resources :notifications, only: :index
   resources :menus, only: :index
+  resources :menus, only: :index
   resources :reservations, only: [:create] do
     collection do
       get "available_dates"
@@ -17,5 +18,7 @@ Rails.application.routes.draw do
     resources :menus
     resources :sortable_menus, only: :update
     resources :reservations
+    resources :day_conditions
+    resources :temporary_dates
   end
 end

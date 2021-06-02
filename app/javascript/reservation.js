@@ -1,8 +1,6 @@
 // カレンダー
 import 'flatpickr';
 import 'flatpickr/dist/l10n/ja';
-// カレンダーの色を変更
-import 'flatpickr/dist/themes/material_orange.css';
 
 export const reservationSystem = () => {
   const calendar = document.getElementById('flatpickr');

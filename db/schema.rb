@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_28_022604) do
+ActiveRecord::Schema.define(version: 2021_06_02_044351) do
 
   create_table "admin_users", charset: "utf8mb4", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2021_05_28_022604) do
     t.integer "end_min"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["applicable_date", "wday"], name: "index_day_conditions_on_applicable_date_and_wday", unique: true
   end
 
   create_table "menus", charset: "utf8mb4", force: :cascade do |t|

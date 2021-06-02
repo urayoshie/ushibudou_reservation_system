@@ -14,6 +14,8 @@ class Reservation < ApplicationRecord
   # PERMITTED_MINUTES = [0, 15, 30, 45]
   MAXIMUM_GUEST_NUMBER = 12
   ACCEPTABLE_PRIVATE_NUMBER = 6
+  DEFAULT_START_MIN = 900
+  DEFAULT_END_MIN = 1500
 
   PERIOD_MONTH = 3.months
 
@@ -78,7 +80,6 @@ class Reservation < ApplicationRecord
 
   ###### クラスメソッド ######
   class << self
-
     # 引数の日付の「営業時間」を取得するメソッド
     def fetch_business_hours(datetime)
       date = datetime.to_date
@@ -189,7 +190,7 @@ class Reservation < ApplicationRecord
     #   end
     # end
 
-    # 1日(15:00~23:00)2時間単位での予約最大人数と貸切予約の有無の配列ハッシュデータ
+    # 1日(15:00~23:00)2時間単位での予約最大人数と貸��予約の有無の配列ハッシュデータ
     def biggest_num_list(datetime, exclude_reservation_id = nil)
       reservation_list = reserve_list(datetime, exclude_reservation_id)
 

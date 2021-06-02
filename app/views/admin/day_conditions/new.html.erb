@@ -1,0 +1,10 @@
+<h1>管理者画面 規定営業日追加登録</h1>
+<%= form_with url: admin_day_conditions_path, scope: :day_condition do |form| %>
+  <input type="text" name="applicable_date" id="flatpickr">
+  <div id=container style="padding: 2rem;">
+    <% (0..6).to_a.each do |wday| %>
+      <%= render "slider", wday: wday %>
+    <% end %>
+  </div>
+  <%= form.submit "送信" %>
+<% end %>

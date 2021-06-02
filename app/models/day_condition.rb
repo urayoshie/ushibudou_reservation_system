@@ -1,5 +1,9 @@
 class DayCondition < ApplicationRecord
   DAY_LIST = (0..6)
+  validates :applicable_date, uniqueness: {
+                                scope: :wday,
+                                message: "で同じ曜日のデータは複数登録できません",
+                              }
   validates :wday, presence: true, numericality: { in: DAY_LIST }
 
   # start_date から end_date までの規定営業日の配列を取得

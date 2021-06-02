@@ -1,0 +1,15 @@
+<% wday_conditions = @day_conditions[wday] %>
+<% start_min = wday_conditions.first.start_min || Reservation::DEFAULT_END_MIN %>
+<% end_min = wday_conditions.first.end_min || Reservation::DEFAULT_END_MIN %>
+<p style="padding-bottom: 2rem;">
+  <%= @days[wday] %>
+  <input type="hidden" name="day_conditions[][wday]" value="<%= wday %>">
+  <input type="checkbox" name="day_conditions[][edit]" id="day-conditions-<%= wday %>-edit">
+  <input type="checkbox" name="day_conditions[][open]" id="day-conditions-<%= wday %>-open" <%= "checked" if wday_conditions.first.start_min.present? %> disabled>
+  <div class="slider" data-wday="<%= wday %>" data-start="<%= start_min %>" data-end="<%= end_min %>" disabled="true"></div>
+  <input type="hidden" name="day_conditions[][start_min]" id="day-conditions-<%= wday %>-start">
+  <input type="hidden" name="day_conditions[][end_min]" id="day-conditions-<%= wday %>-end">
+</p>
+<p>
+  <%= render partial: "wday_condition", collection: wday_conditions %>
+</p>

@@ -30,6 +30,9 @@ end
 # end
 
 # day_conditions
+date4 = Date.new(2021, 4, 20)
+DayCondition.create!(applicable_date: date4, wday: 3, start_min: nil, end_min: nil)
+
 date = Date.new(2021, 5, 26)
 DayCondition.create!(applicable_date: date, wday: 0, start_min: 900, end_min: 1500)
 DayCondition.create!(applicable_date: date, wday: 1, start_min: 900, end_min: 1500)
@@ -129,14 +132,14 @@ reservation_params = [
   { start_at: "2021-06-21 21:00:00", guest_number: 2 },
   { start_at: "2021-06-21 23:00:00", guest_number: 8 },
   # 予約人数選択後、予約日を選択し、予約人数を変更した時に選べる人数と選べない人数が出るケース(6月22日)
-  { start_at: "2021-06-22 15:00:00", guest_number: 4 },
-  { start_at: "2021-06-22 15:30:00", guest_number: 4 },
-  { start_at: "2021-06-22 17:00:00", guest_number: 5 },
-  { start_at: "2021-06-22 19:30:00", guest_number: 1 },
-  { start_at: "2021-06-22 21:00:00", guest_number: 2 },
-  { start_at: "2021-06-22 21:30:00", guest_number: 5 },
-  { start_at: "2021-06-22 22:00:00", guest_number: 2 },
-  { start_at: "2021-06-22 23:00:00", guest_number: 2 },
+  { start_at: "2021-06-24 15:00:00", guest_number: 4 },
+  { start_at: "2021-06-24 15:30:00", guest_number: 4 },
+  { start_at: "2021-06-24 17:00:00", guest_number: 5 },
+  { start_at: "2021-06-24 19:30:00", guest_number: 1 },
+  { start_at: "2021-06-24 21:00:00", guest_number: 2 },
+  { start_at: "2021-06-24 21:30:00", guest_number: 5 },
+  { start_at: "2021-06-24 22:00:00", guest_number: 2 },
+  { start_at: "2021-06-24 23:00:00", guest_number: 2 },
 ]
 
 reservation_params.map! do |reservation|

@@ -5,6 +5,7 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "5.2.1",
     "flatpickr": "^4.6.9",
+    "nouislider": "^15.1.1",
     "sortablejs": "^1.13.0",
     "turbolinks": "^5.2.0"
   },
