@@ -21,6 +21,9 @@ ja:
         email: メールアドレス
         phone_number: 電話番号
         request: 要望
+  date:
+    formats:
+      info: '%Y年%-m月%-d日(%a)'
   time:
     formats:
       date: '%Y/%m/%d(%a)'

@@ -1,10 +1,16 @@
 class DayCondition < ApplicationRecord
+  include PerUnitMin
   DAY_LIST = (0..6)
   validates :applicable_date, uniqueness: {
                                 scope: :wday,
                                 message: "で同じ曜日のデータは複数登録できません",
                               }
   validates :wday, presence: true, numericality: { in: DAY_LIST }
+  validates :start_min, numericality: { in: LIMIT_MIN_RANGE }
+  validates :end_min, numericality: { in: LIMIT_MIN_RANGE }
+
+  validate :per_unit_start_min
+  validate :per_unit_end_min
 
   # start_date から end_date までの規定営業日の配列を取得
   def self.default_business_dates(start_date, end_date)

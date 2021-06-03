@@ -1,5 +1,11 @@
 class TemporaryDate < ApplicationRecord
+  include PerUnitMin
   validates :date, uniqueness: true
+  validates :start_min, numericality: { in: LIMIT_MIN_RANGE }
+  validates :end_min, numericality: { in: LIMIT_MIN_RANGE }
+
+  validate :per_unit_start_min
+  validate :per_unit_end_min
 
   class << self
     # start_date から end_date までの臨時休業日の配列を取得

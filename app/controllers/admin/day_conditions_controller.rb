@@ -52,6 +52,9 @@ class Admin::DayConditionsController < Admin::AdminController
   end
 
   def destroy
+    @day_condition = DayCondition.find(params[:id])
+    @day_condition.destroy!
+    redirect_to admin_day_conditions_path, notice: "day_condition was successfully destroyed."
   end
 
   private

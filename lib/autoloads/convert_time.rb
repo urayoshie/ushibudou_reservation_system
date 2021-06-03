@@ -20,9 +20,9 @@ class ConvertTime
       (end_min - start_min) / UNIT_MIN
     end
 
-    # 2700(s) --> 45(min) --> 3(units)
-    def sec_to_unit(sec)
-      sec / MINUTES_PER_HOUR / UNIT_MIN
+    # 45(min) --> 3(units)
+    def min_to_unit(min)
+      min / UNIT_MIN
     end
 
     private

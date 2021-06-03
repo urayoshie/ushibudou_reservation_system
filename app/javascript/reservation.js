@@ -194,9 +194,8 @@ export const reservationSystem = () => {
         phone_number: guestPhone.value,
         request: guestRequest.value,
         guest_number: numBox.value,
-        // date: calendar.value,
-        // time: timeBox.value,
-        start_at: `${calendar.value} ${timeBox.value}`,
+        date: calendar.value,
+        time: timeBox.value,
       },
     };
 
