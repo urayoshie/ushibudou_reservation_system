@@ -14,12 +14,20 @@ ja:
         name: 商品名
         price: 価格
       reservation:
-        start_at: 予約日時
+        date: 予約日
+        start_min: 予約時間
         name: 予約名
         guest_number: 予約人数
         email: メールアドレス
         phone_number: 電話番号
         request: 要望
+  date:
+    formats:
+      info: '%Y年%-m月%-d日(%a)'
+      month: '%Y-%m'
+      month_display: '%Y年%-m月'
+      date: '%Y/%m/%d(%a)'
+      default: '%Y-%m-%d'
   time:
     formats:
       date: '%Y/%m/%d(%a)'

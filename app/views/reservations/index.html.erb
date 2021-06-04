@@ -12,14 +12,12 @@
     </select>
   </div>
   <p class="notification">※ 6名様以上のご予約は貸切となります</p>
-  <%# <form action="cgi-bin/abc.cgi" method="post"> %>
-  <%# <label><input type="checkbox" name="private" value="1" id="check" disabled onchange="">貸切</label> %>
   <div class="reservation_date">
     <label for="calendar" id="reservation_date">予約日</label>
     <input type="text" id="flatpickr">
   </div>
   <label for="time-box" id="reservation_time">予約時間</label>
-  <select name="started_time" id="time-box" required></select>
+  <select name="start_time" id="time-box" required></select>
   <div class="check">
     <button id="modal-button" disabled>予約へ進む</button>
   </div>

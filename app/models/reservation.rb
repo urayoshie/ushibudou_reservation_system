@@ -1,94 +1,92 @@
 class Reservation < ApplicationRecord
+  include PerUnitMin
+
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  # VALID_PHONE_NUMBER_REGEX = /\A0(\d{1}[-(]?\d{4}|\d{2}[-(]?\d{3}|\d{3}[-(]?\d{2}|\d{4}[-(]?\d{1})[-)]?\d{4}\z|\A0[5789]0[-]?\d{4}[-]?\d{4}\z/
   VALID_PHONE_NUMBER_REGEX = /\A0\d{1,3}-?\d{2,4}-?\d{3,4}\z/
 
-  # PER_MIN = 15
-  # LIMITE_MIN = 120
+  UNIT_MIN = ConvertTime::UNIT_MIN  # 15
+  LIMITE_UNITS = 8
+  LIMIT_MIN_RANGE = 0..1800
 
-  # START_TIME = 15
-  # END_TIME = 25
-  # LASTORDER_TIME = 23
-  # WHOLEDAY_COUNT = (END_TIME - START_TIME) * (60 / PER_MIN)
-  # TILL_LASTORSER_COUNT = (LASTORDER_TIME - START_TIME) * (60 / PER_MIN) + 1
-  # PERMITTED_MINUTES = [0, 15, 30, 45]
   MAXIMUM_GUEST_NUMBER = 12
   ACCEPTABLE_PRIVATE_NUMBER = 6
+  RESERVED_MIN = UNIT_MIN * LIMITE_UNITS
   DEFAULT_START_MIN = 900
   DEFAULT_END_MIN = 1500
+  DAYS = %w[日 月 火 水 木 金 土]
 
+  # 予約できる期間
   PERIOD_MONTH = 3.months
 
   PAST_ERROR_MESSAGE = "は本日以降の日付を選択してください"
-  AFTER_THREE_MONTHS_ERROR_MESSAGE = "は本日より#{PERIOD_MONTH.in_months.round}ヶ月未満の日付を選択してください"
+  PAST_MONTHS_ERROR_MESSAGE = "は本日より#{PERIOD_MONTH.in_months.round}ヶ月未満の日付を選択してください"
   CLOSED_MESSAGE = "は営業日を選択してください"
-  UNIT_MESSAGE = "は#{ConvertTime::PER_MIN}分ごとの時間を選択してください"
   CLOSED_HOURS_MESSAGE = "は営業時間内で選択してください"
+  UNIT_MESSAGE = "は#{UNIT_MIN}分ごとの時間を選択してください"
+  UNDER_LIMIT_UNITE_MESSAGE = "と終了時間は#{UNIT_MIN * LIMITE_UNITS}分以上の間隔を空けてください。"
 
-  validates :guest_number, :start_at, presence: true
+  validates :guest_number, :date, presence: true
   validates :name, presence: true, length: { maximum: 50 }
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX }
   validates :phone_number, presence: true, format: { with: VALID_PHONE_NUMBER_REGEX }
   validates :request, length: { maximum: 300 }
+  validates :start_min, presence: true, numericality: { in: LIMIT_MIN_RANGE }
 
-  # start_at は 15時〜23時以外はいらない様にバリデーションを入れる
-  # validates_time :start_at, between: ["15:00", "23:00"]
-  # 15分毎(0, 15, 30, 45)以外はいらない様にバリデーションを入れる
-  # validate :min_only
   # 本日以前の日付は入らないようにする
   validate :date_before_start
   # 本日から3ヶ月目以降の日付は入らないようにする
-  validate :date_after_three_months
-  # start_at が 営業日 かつ 開始時間〜終了時間(15×8 分前) かつ 15分区切り であること
+  validate :past_date
+  # start_min は15の倍数
+  validate :per_unit_start_min
+  # date が 営業日 かつ start_min が 開始時間〜終了時間(15×8 分前) かつ 15分区切り であること
   validate :within_business_hours
 
+  def start_time
+    ConvertTime.to_time(start_min)
+  end
+
+  def start_datetime
+    date.in_time_zone + start_min.minutes
+  end
+
   ###### バリデーション ######
-  def min_only
-    # if PERMITTED_MINUTES.include?(start_at.min)
-    #   true
-    # else
-    #   errors.add(:start_at, "must be 0, 15, 30, and 45")
-    # end
-  end
-
   def date_before_start
-    errors.add(:start_at, PAST_ERROR_MESSAGE) if start_at < Date.today
+    if date < Date.current
+      errors.add(:date, PAST_ERROR_MESSAGE)
+    end
   end
 
-  def date_after_three_months
-    errors.add(:start_at, AFTER_THREE_MONTHS_ERROR_MESSAGE) if start_at > (Date.today + PERIOD_MONTH)
+  def past_date
+    if date > Date.current + PERIOD_MONTH
+      errors.add(:date, PAST_MONTHS_ERROR_MESSAGE)
+    end
   end
 
   def within_business_hours
-    start_min, end_min = Reservation.fetch_business_hours(start_at)
-    if start_min.nil? || end_min.nil?
-      errors.add(:start_at, CLOSED_MESSAGE) and return
+    open_min, closed_min = Reservation.fetch_business_hours(date)
+    if open_min.nil? || closed_min.nil?
+      errors.add(:start_min, CLOSED_MESSAGE) and return
     end
 
-    limit_min = end_min - ConvertTime::RESERVED_MIN
-    chosen_min = ConvertTime.to_min(start_at.strftime("%H:%M"))
+    limit_min = closed_min - RESERVED_MIN
+    chosen_min = self.start_min
 
-    if start_min.nil?
-      errors.add(:start_at, CLOSED_MESSAGE)
-    elsif chosen_min % ConvertTime::PER_MIN != 0
-      errors.add(:start_at, UNIT_MESSAGE)
-    elsif start_min > chosen_min || chosen_min > limit_min
-      errors.add(:start_at, CLOSED_HOURS_MESSAGE)
+    if open_min > chosen_min || chosen_min > limit_min
+      errors.add(:start_min, CLOSED_HOURS_MESSAGE)
     end
   end
 
   ###### クラスメソッド ######
   class << self
     # 引数の日付の「営業時間」を取得するメソッド
-    def fetch_business_hours(datetime)
-      date = datetime.to_date
+    def fetch_business_hours(date)
       temporary_date = TemporaryDate.find_by(date: date)
       if temporary_date
         return [temporary_date[:start_min], temporary_date[:end_min]]
       end
 
-      business_day = DayCondition.order(created_at: :desc).where(wday: date.wday).find_by("applicable_date <= ?", date)
+      business_day = DayCondition.order(applicable_date: :desc).where(wday: date.wday).find_by("applicable_date <= ?", date)
       if business_day
         return [business_day[:start_min], business_day[:end_min]]
       end
@@ -117,42 +115,44 @@ class Reservation < ApplicationRecord
     end
 
     # 予約人数と貸切予約かどうかの1日単位(15:00~24:45)の配列ハッシュデータ
-    def reserve_list(datetime, exclude_reservation_id = nil)
-      # beginning_of_day = date.beginning_of_day
-      # end_of_day = date.end_of_day
+    def reserve_list(date, exclude_reservation_id = nil)
+      open_min, closed_min = fetch_business_hours(date)
 
-      base_datetime = datetime.beginning_of_day
-      start_min, end_min = fetch_business_hours(base_datetime)
+      # 休業日の場合は空配列を返す
+      if open_min.nil? || closed_min.nil?
+        message = "休業日に対して、 reserve_list メソッドが動作しました。"
+        OutputLog.error(
+          date: date,
+          open_min: open_min,
+          closed_min: closed_min,
+          message: message,
+        )
+        raise message
+      end
 
-      # 【重要】エラーを通知する
-      return [] if start_min.nil?
-
-      beginning_of_day = base_datetime + start_min.minutes
-      end_of_day = base_datetime + end_min.minutes
-
-      error = false
-      # list = (0..count).map do |i|
-      #   { time: beginning_of_day + (i * PER_MIN).minute, number: 0 }
-      # end
-
-      # # それぞれの時間の予約の合計人数
-      # where(start_at: beginning_of_day..end_of_day).each do |reservation|
-      #   start_unit = (reservation.start_at - beginning_of_day).floor / 60 / PER_MIN
-      #   # list2 = list[start_unit][:number]
-      #   8.times do |i|
-      #     list[start_unit + i][:number] += reservation.guest_number
-      #   end
-      # end
       reservation_list = []
-      total_units = ConvertTime.total_units(start_min, end_min)
+      total_units = ConvertTime.total_units(open_min, closed_min)
       total_units.times do
         reservation_list << { total_number: 0, private_reservation: false }
       end
 
-      where(start_at: beginning_of_day..end_of_day).where.not(id: exclude_reservation_id).each do |reservation|
-        diff_seconds = (reservation.start_at - beginning_of_day).floor
-        start_unit = ConvertTime.sec_to_unit(diff_seconds)
-        ConvertTime::LIMITE_UNITS.times do |i|
+      where(date: date).where.not(id: exclude_reservation_id).each do |reservation|
+        diff_minutes = reservation.start_min - open_min
+        start_unit = ConvertTime.min_to_unit(diff_minutes)
+        if start_unit < 0 || start_unit > total_units - LIMITE_UNITS
+          message = "予約可能ではない時間に予約が入っています。"
+          OutputLog.error(
+            reservation_id: reservation.id,
+            date: date,
+            start_min: reservation.start_min,
+            open_min: open_min,
+            closed_min: closed_min,
+            message: message,
+          )
+          raise message
+        end
+
+        LIMITE_UNITS.times do |i|
           reservation_params = reservation_list[start_unit + i]
           if reservation.guest_number >= ACCEPTABLE_PRIVATE_NUMBER
             if reservation_params[:private_reservation]
@@ -169,50 +169,26 @@ class Reservation < ApplicationRecord
           reservation_params[:total_number] += reservation.guest_number
 
           # 予約人数がオーバーしているとき
-          reservation_params[:error] = true if reservation_params[:total_number] > MAXIMUM_GUEST_NUMBER
-
-          # reservation_list[start_unit + i][:total_number] += reservation.guest_number
-          # if reservation.private_reservation
-          #   reservation_list[start_unit + i][:private_reservation] = true
-          # end
+          if reservation_params[:total_number] > MAXIMUM_GUEST_NUMBER
+            reservation_params[:error] = true
+          end
         end
       end
 
-      # list = total_numbers.map.with_index do |total_number, i|
-      #   { time: beginning_of_day + (i * PER_MIN).minute, total_number: total_number }
-      # end
       reservation_list
     end
 
-    # def list
-    #   (0..7).map do |i|
-    #     { time: start_at + PER_MIN.minute * i, number: guest_number }
-    #   end
-    # end
-
-    # 1日(15:00~23:00)2時間単位での予約最大人数と貸��予約の有無の配列ハッシュデータ
+    # 1日(15:00~23:00)2時間単位での予約最大人数と貸切予約の有無の配列ハッシュデータ
     def biggest_num_list(datetime, exclude_reservation_id = nil)
       reservation_list = reserve_list(datetime, exclude_reservation_id)
 
       biggest_number_list = []
 
-      (reservation_list.size - ConvertTime::LIMITE_UNITS + 1).times do |i|
-        list = reservation_list.slice(i..(i + ConvertTime::LIMITE_UNITS - 1))
+      (reservation_list.size - LIMITE_UNITS + 1).times do |i|
+        list = reservation_list.slice(i..(i + LIMITE_UNITS - 1))
 
         biggest_number = list.max_by { |k| k[:total_number] }[:total_number]
 
-        # reservable_num_list(datetime)���12から引いたものでは���いものにしたいので以下1行を外す
-        # 12か��引いたもののリストはまた別でメソッドを作る
-        # reservable_number = MAXIMUM_GUEST_NUMBER - biggest_number
-
-        # boolean_list = list.map { |data| data[:private_reservation] }
-        # private_reservation = boolean_list.inject do |result, data|
-        #   result || data
-        # end
-        # private_reservation = boolean_list.inject { |data| result || data }
-        # private_reservation = list.inject(false) { |result, data| result || data[[:total_number]] }
-        # available_seats_list[:private_reservation_exists] = true
-        # private_reservation = list.inject(false) { |result, data| result || data[:private_reservation] }
         private_reservation = list.any? { |data| data[:private_reservation] }
         error = list.any? { |data| data[:error] }
         biggest_number_list << { biggest_number: biggest_number, private_reservation_exists: private_reservation, error: error }
@@ -220,85 +196,31 @@ class Reservation < ApplicationRecord
       biggest_number_list
     end
 
-    # # 空き人数と貸切予約の有無の1日単位(15:00~23:00)の配列ハッシュデータ
-    # def reservable_num_list(datetime)
-    #   reservation_list = reserve_list(datetime)
-
-    #   available_seats_list = []
-
-    #   (reservation_list.size - 7).times do |i|
-    #     list = reservation_list.slice(i..i + 7)
-
-    #     biggest_number = list.max_by { |k| k[:total_number] }[:total_number]
-
-    #     # reservable_num_list(datetime)は12から引いたものではないも��にし���いの��以下1行を外す
-    #     # 12か���引いたもののリストはまた別でメ����ドを作る
-    #     reservable_number = MAXIMUM_GUEST_NUMBER - biggest_number
-
-    #     # boolean_list = list.map { |data| data[:private_reservation] }
-    #     # private_reservation = boolean_list.inject do |result, data|
-    #     #   result || data
-    #     # end
-    #     # private_reservation = boolean_list.inject { |data| result || data }
-    #     # private_reservation = list.inject(false) { |result, data| result || data[[:total_number]] }
-    #     # available_seats_list[:private_reservation_exists] = true
-    #     # private_reservation = list.inject(false) { |result, data| result || data[:private_reservation] }
-    #     private_reservation = list.any? { |data| data[:private_reservation] }
-    #     available_seats_list << { reservable_number: reservable_number, private_reservation_exists: private_reservation }
-    #   end
-    #   available_seats_list
-    # end
-
-    # 1日あた���の15:00~23:00の15��単位での予約受��の真偽判定
+    # 1日あたりの15:00~23:00の15分単位での予約受付の真偽判定
     def display_available_time(datetime, guest_number, exclude_reservation_id = nil)
       # array = reservable_num_list(datetime)
       reservable_array = []
       # biggest_num_list(datetime)
 
       biggest_num_list(datetime, exclude_reservation_id).map do |data|
-        # if guest_number <= data[:reservable_number] && data[:private_reservation_exists] == false
-        #   reservable_array << true
-        # else
-        #   reservable_array << false
-        # end
         reservable_number = MAXIMUM_GUEST_NUMBER - data[:biggest_number]
         reservable_array << (guest_number <= reservable_number && !data[:private_reservation_exists])
       end
-      #     reservable_number_array = available_seats_list.map { |data| data[:reservable_number] }
-      # private_reservation_exists_array = available_seats_list.map { |data| data[:private_reservation_exists] }
-      # array = []
 
-      # array << reservable_number_array.zip(private_reservation_exists_array) do |reservable_number, private_reservation_exists|
-      #   if guest_number <= reservable_number && private_reservation_exists == false
-      #     array << true
-      #   else
-      #     array << false
-      #   end
-      # end
       reservable_array
     end
 
-    # 貸切予約が出来るかどうかの真偽配列
+    # ����切予約���出来るかどうかの真偽配列
     def choose_private_reservation(datetime, exclude_reservation_id = nil)
-      # reservation_list = reserve_list(datetime)
-      # available_seats_list = biggest_num_list(datetime)
-
       reservable_private_reservation = []
       biggest_num_list(datetime, exclude_reservation_id).map do |data|
-        # if data[:reservable_number] == MAXIMUM_GUEST_NUMBER
-        #   reservable_private_reservation << true
-        # else
-        #   reservable_private_reservation << false
-        # end
-        # reservable_number = MAXIMUM_GUEST_NUMBER - data[:biggest_number]
         reservable_private_reservation << data[:biggest_number].zero?
-        # reservable_private_reservation << data[:reservable_number] == 12 && !data[:private_reservation_exists]
       end
       reservable_private_reservation
     end
 
     def reservable_list(datetime, guest_number, exclude_reservation_id = nil)
-      # 6人以上なら貸切用のメソッド, 6人未満なら人数用のメソッド
+      # 6人以上なら貸切用の��ソッド, 6人未満�������ら人数用のメソッド
       if guest_number >= 6
         choose_private_reservation(datetime, exclude_reservation_id)
       else
@@ -306,21 +228,10 @@ class Reservation < ApplicationRecord
       end
     end
 
-    # 1日単位で1コマ(例えば15::00からの8コマ2時間)でも予約可能な場合はtrue,一つも空きが無い場合はfalseを返す。show_string_datetime(guest_number)のif文に移動。
-    # def show_reservable_date(date, guest_number)
-    #   # reservable_array = display_available_time(date, guest_number)
-
-    #   # show_date = reservable_array.any?
-    #   display_available_time(date, guest_number).any?
-    # end
-
-    # 今日から3ヶ月までの期間、予約可能な日付を文字列で配列に格納
+    # 本日日から3ヶ月までの期間、予約可能な日付を文字列で配列に格納
     def show_string_date(guest_number)
       start_date = Date.current
       end_date = start_date + PERIOD_MONTH
-      # reserved_date_list = Reservation.where(start_at: Date.current..(Date.current + 3.months)).distinct.pluck(:start_at).map(&:to_date).uniq
-
-      # reservable_date_range = Date.current..(Date.current + PERIOD_MONTH)
 
       # 営業日
       business_dates = calc_business_dates(start_date, end_date)
@@ -336,29 +247,27 @@ class Reservation < ApplicationRecord
         end
 
       business_dates - not_available_date_list
-      # available_date_list = (reservable_date_range.to_a - not_available_date_list)
-      # available_date_list = (reservable_date_range.to_a - not_available_date_list).select { |date| date.wday != 2 }
-      # available_date_list = (business_dates.to_a - not_available_date_list).select do |date|
-      #   date.wday != 2
-      # end
+    end
 
-      # reservable_date_range.to_a.each do |date|
-      #   available_date_list << date if not_available_date_list.exclude?(date)
-      # end
+    def calc_available_time(date, guest_number, exclude_reservation_id = nil)
+      available_time = []
 
-      # available_date_list
+      # 人数を選択した場合(1日あたりの15:00~23:00の15分単位での予約受入の真偽判定)
+      boolean_list = Reservation.reservable_list(date, guest_number, exclude_reservation_id)
+      open_min, closed_min = Reservation.fetch_business_hours(date)
+      time = date.beginning_of_day + open_min.minutes
+      boolean_list.each do |boolean|
+        if date == Date.today
+          if boolean && time > Time.current
+            available_time << time.strftime("%H:%M")
+          end
+        else
+          available_time << time.strftime("%H:%M") if boolean
+        end
+        time += 15.minute
+      end
 
-      # display_available_time(date, guest_number).any?
-      # Date.current.upto(Date.current + 3.months) do |date|
-      #   # 火曜日は予約できないので含めない
-      #   next if date.wday == 2
-      #   # 予約がない日、または、予約はあるが予約できる日
-      #   # if reserved_date_list.exclude?(date) || reservable_list(date, guest_number).any?
-      #   #   available_date_list << date.strftime
-      #   # end
-
-      # end
-      # available_date_list
+      available_time
     end
   end
 end

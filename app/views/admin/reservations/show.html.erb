@@ -1,11 +1,11 @@
 <div class="reservation_details">
   <p>
     <strong>予約日:</strong>
-    <%= l @reservation.start_at, format: :date %>
+    <%= l @reservation.date, format: :date %>
   </p>
   <p>
     <strong>予約時間:</strong>
-    <%= l @reservation.start_at, format: :short %>
+    <%= @reservation.start_time %>
   </p>
   <p>
     <strong>予約名:</strong>
@@ -30,5 +30,5 @@
 </div>
 <div class="reservation_edit_back">
   <%= link_to '編集', edit_admin_reservation_path(@reservation) %>
-  <%= link_to '戻る', admin_reservations_path %>
+  <%= link_to '戻る', admin_reservations_path(chosen_month: l(@reservation.date, format: :month)) %>
 </div>

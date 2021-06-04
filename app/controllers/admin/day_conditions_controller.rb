@@ -1,10 +1,12 @@
 class Admin::DayConditionsController < Admin::AdminController
   def index
     @day_conditions = DayCondition.order(:applicable_date, :wday)
+    @days = Reservation::DAYS
+    @initial_date = DayCondition.initial_date
   end
 
   def new
-    @days = %w[日 月 火 水 木 金 土]
+    @days = Reservation::DAYS
     if DayCondition.exists?
       # 2回目以降
       today = Date.current
@@ -15,6 +17,7 @@ class Admin::DayConditionsController < Admin::AdminController
         index = (day_conditions.size - 1) - day_conditions.reverse.find_index { |day_condition| next_occurring_date >= day_condition.applicable_date }
         @day_conditions[wday] = day_conditions[index..]
       end
+      @initial_date = DayCondition.initial_date
       render :new
     else
       # 初回
@@ -34,8 +37,10 @@ class Admin::DayConditionsController < Admin::AdminController
 
         affected_wdays = new_day_condition_params.map { |param| param["wday"].to_i }
         # 変更された曜日の内、applicable_date 以降で、予約が入っている日付の配列
-        start_time = params[:applicable_date].to_date.beginning_of_day
-        affected_dates = Reservation.select(:start_at).where("start_at >= ?", start_time).map { |reservation| reservation.start_at.to_date }.uniq.select { |date| date.wday.in?(affected_wdays) }
+        applicable_date = params[:applicable_date].to_date
+        affected_dates = Reservation.where("date >= ?", applicable_date).distinct.pluck(:date).select do |date|
+          date.wday.in?(affected_wdays)
+        end
 
         affected_dates.each do |date|
           ReservationStatus.update_reservation_status!(date)
@@ -52,6 +57,13 @@ class Admin::DayConditionsController < Admin::AdminController
   end
 
   def destroy
+    @day_condition = DayCondition.find(params[:id])
+    if @day_condition.applicable_date == DayCondition.initial_date
+      flash[:alert] = "初期設定の削除はできません。"
+    else
+      @day_condition.destroy!
+    end
+    redirect_to admin_day_conditions_path
   end
 
   private

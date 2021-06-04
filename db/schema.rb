@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_02_044351) do
+ActiveRecord::Schema.define(version: 2021_06_02_071624) do
 
   create_table "admin_users", charset: "utf8mb4", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -63,13 +63,14 @@ ActiveRecord::Schema.define(version: 2021_06_02_044351) do
 
   create_table "reservations", charset: "utf8mb4", force: :cascade do |t|
     t.integer "guest_number", null: false
-    t.datetime "start_at", null: false
     t.string "name", null: false
     t.string "email", null: false
     t.string "phone_number", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "request"
+    t.integer "start_min", null: false
+    t.date "date", null: false
   end
 
   create_table "temporary_dates", charset: "utf8mb4", force: :cascade do |t|
