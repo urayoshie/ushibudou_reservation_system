@@ -7,7 +7,8 @@ import Rails from '@rails/ujs';
 import Turbolinks from 'turbolinks';
 import { reservationSystem } from '../reservation';
 import { menuSortable } from '../menu_sortable';
-import { rangeSlider } from '../day_condition';
+import { dayConditionRangeSlider } from '../day_condition';
+import { temporaryDateRangeSlider } from '../temporary_date';
 
 Rails.start();
 Turbolinks.start();
@@ -17,8 +18,10 @@ document.addEventListener('turbolinks:load', () => {
     menuSortable();
   } else if (document.getElementById('num-box')) {
     reservationSystem();
-  } else if (document.querySelector('.slider')) {
-    rangeSlider();
+  } else if (location.pathname.indexOf('/admin/day_conditions') != -1 && document.querySelector('.slider')) {
+    dayConditionRangeSlider();
+  } else if (location.pathname.indexOf('/admin/temporary_dates') != -1 && document.querySelector('.slider')) {
+    temporaryDateRangeSlider();
   }
 
   const monthForm = document.getElementById('month-form');

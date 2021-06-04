@@ -1,0 +1,6 @@
+<p style="padding-bottom: 2rem;">
+  <input type="checkbox" name="temporary_date[open]" id="temporary_date-open" <%= "checked" if slider_open.present? %>>
+  <div class="slider" data-start="<%= slider_start %>" data-end="<%= slider_end %>" <%= 'disabled="true"' if slider_open.nil? %>></div>
+  <input type="hidden" name="temporary_date[start_min]" id="temporary_date-start">
+  <input type="hidden" name="temporary_date[end_min]" id="temporary_date-end">
+</p>

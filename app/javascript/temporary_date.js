@@ -2,20 +2,20 @@ import noUiSlider from 'nouislider';
 import 'flatpickr';
 import 'flatpickr/dist/l10n/ja';
 
-export const dayConditionRangeSlider = () => {
-  const isNew = document.getElementById('day-conditions-0-edit');
+export const temporaryDateRangeSlider = () => {
+  const minDate = document.getElementById('flatpickr').dataset.min_date;
+  const defaultDate = document.getElementById('flatpickr').dataset.default_date;
   let config = {
     locale: 'ja',
     // enable: JSON.parse(calendar.dataset.arr),
-    defaultDate: 'today',
+    minDate: minDate,
+    defaultDate: defaultDate || 'today',
     disableMobile: 'true',
   };
-  const minDate = document.getElementById('flatpickr').dataset.min_date;
-  if (minDate) config.minDate = minDate;
 
   flatpickr('#flatpickr', config);
 
-  const ranges = document.querySelectorAll('.slider');
+  const range = document.querySelector('.slider');
   const rangeMin = 0,
     rangeMax = 1680,
     limit = 1440,
@@ -32,11 +32,7 @@ export const dayConditionRangeSlider = () => {
     return `${hour}:${min}`;
   };
 
-  // 0 = initial minutes from start of day
-  // 1440 = maximum minutes in a day
-  // step: 30 = amount of minutes to step by.
-
-  ranges.forEach((range) => {
+  const sliderSetup = (range) => {
     const startMin = range.dataset.start;
     const startMax = range.dataset.end;
 
@@ -57,9 +53,9 @@ export const dayConditionRangeSlider = () => {
     });
 
     const wday = range.dataset.wday;
-    const openCheck = document.getElementById(`day-conditions-${wday}-open`);
-    const start = document.getElementById(`day-conditions-${wday}-start`);
-    const end = document.getElementById(`day-conditions-${wday}-end`);
+    const openCheck = document.getElementById('temporary_date-open');
+    const start = document.getElementById('temporary_date-start');
+    const end = document.getElementById('temporary_date-end');
 
     slider.on('update', function (values, handle) {
       if (handle === 0) {
@@ -77,17 +73,6 @@ export const dayConditionRangeSlider = () => {
         // slider.set([900, 1500]);
       }
     });
-    if (isNew) {
-      const editCheck = document.getElementById(`day-conditions-${wday}-edit`);
-      editCheck.addEventListener('click', (e) => {
-        if (e.target.checked) {
-          openCheck.removeAttribute('disabled');
-          if (openCheck.checked) range.removeAttribute('disabled');
-        } else {
-          openCheck.setAttribute('disabled', true);
-          range.setAttribute('disabled', true);
-        }
-      });
-    }
-  });
+  };
+  sliderSetup(range);
 };

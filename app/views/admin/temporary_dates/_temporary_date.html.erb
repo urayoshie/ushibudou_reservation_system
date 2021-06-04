@@ -1,0 +1,5 @@
+<p>日付: <%= l(temporary_date.date, format: :info) %></p>
+<p>開始時間: <%= temporary_date.start_time %></p>
+<p>終了時間: <%= temporary_date.end_time %></p>
+<%= link_to '編集', edit_admin_temporary_date_path(temporary_date) %>
+<%= link_to '削除', admin_temporary_date_path(temporary_date), method: :delete, data: { confirm: '削除しますか?' } %>

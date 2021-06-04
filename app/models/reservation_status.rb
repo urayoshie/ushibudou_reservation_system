@@ -9,6 +9,7 @@ class ReservationStatus < ApplicationRecord
 
   class << self
     def update_reservation_status!(date)
+      return unless Reservation.where(date: date).exists?
       # 影響範囲の予約にバリデーションを実行し、失敗すればエラーを出す
       ensure_valid_reservations(date)
       # biggest_num_list を呼び出す
