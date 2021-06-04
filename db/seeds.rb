@@ -30,8 +30,7 @@ DayCondition.create!(applicable_date: date3, wday: 3, start_min: 900, end_min: 1
 
 # temporary_dates
 # 臨時営業日
-TemporaryDate.create!(date: Date.new(2021, 6, 2), start_min: 660, end_min: 1500)
-TemporaryDate.create!(date: Date.new(2021, 6, 25), start_min: 690, end_min: 1500)
+TemporaryDate.create!(date: Date.new(2021, 7, 23), start_min: 660, end_min: 1500)
 TemporaryDate.create!(date: Date.new(2021, 8, 10), start_min: 690, end_min: 1500)
 # 臨時休業日
 TemporaryDate.create!(date: Date.new(2021, 8, 13), start_min: nil, end_min: nil)
@@ -116,6 +115,8 @@ reservation_params = [
   { date: "2021-08-07", start_min: 1290, guest_number: 5 }, # 21:30:00
   { date: "2021-08-07", start_min: 1320, guest_number: 2 }, # 22:00:00
   { date: "2021-08-07", start_min: 1380, guest_number: 2 }, # 23:00:00
+  # 臨時営業日
+  { date: "2021-08-10", start_min: 1020, guest_number: 6 }, # 23:00:00
 ]
 
 reservation_params.map! do |reservation|

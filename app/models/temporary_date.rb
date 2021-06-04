@@ -6,6 +6,25 @@ class TemporaryDate < ApplicationRecord
   validate :per_unit_start_min
   validate :per_unit_end_min
   validate :under_limit_unit
+  validate :prevent_without_default
+  validate :prevent_earlier_date
+
+  PREVENT_WITHOUT_DEFAULT_MESSAGE = "は規定の営業・休業設定後でなければ登録できません"
+  PREVENT_EARLIER_DATE_MESSAGE = "は初期設定より早い日付で登録できません"
+
+  # 規定の営業・休業設定がなければ保存できないようにする
+  def prevent_without_default
+    unless DayCondition.exists?
+      errors.add(:date, PREVENT_WITHOUT_DEFAULT_MESSAGE)
+    end
+  end
+
+  # 初期設定より早い日付で登録できないようにする
+  def prevent_earlier_date
+    if date < DayCondition.initial_date
+      errors.add(:date, PREVENT_EARLIER_DATE_MESSAGE)
+    end
+  end
 
   class << self
     # start_date から end_date までの臨時休業日の配列を取得

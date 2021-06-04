@@ -1,7 +1,7 @@
 <h1>規定営業日・休業日追加登録</h1>
 <%= form_with url: admin_day_conditions_path, scope: :day_condition do |form| %>
   <input type="text" name="applicable_date" id="flatpickr" data-min_date="<%= l(@initial_date) %>">
-  <div id=container style="padding: 2rem;">
+  <div style="padding: 2rem;">
     <% (0..6).to_a.each do |wday| %>
       <%= render "slider", wday: wday %>
     <% end %>

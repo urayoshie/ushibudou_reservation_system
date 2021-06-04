@@ -1,2 +1,10 @@
-<h1>Admin::TemporaryDates#new</h1>
-<p>Find me in app/views/admin/temporary_dates/new.html.erb</p>
+<h1>臨時営業日・休業日登録</h1>
+<%= form_with url: admin_temporary_dates_path, scope: :temporary_date do |form| %>
+  <input type="text" name="temporary_date[date]" id="flatpickr" data-min_date="<%= l(@initial_date) %>">
+  <div style="padding: 2rem;">
+    <%= render "slider", slider_start: Reservation::DEFAULT_START_MIN, slider_end: Reservation::DEFAULT_END_MIN, slider_open: "true" %>
+  </div>
+  <%= form.submit "送信" %>
+<% end %>
+<%= link_to "臨時営業日・休業日 一覧ページ", admin_temporary_dates_path %>
+<%= link_to '管理画面トップページ', admin_root_path %>

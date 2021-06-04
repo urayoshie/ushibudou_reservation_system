@@ -6,7 +6,7 @@ class Reservation < ApplicationRecord
 
   UNIT_MIN = ConvertTime::UNIT_MIN  # 15
   LIMITE_UNITS = 8
-  LIMIT_MIN_RANGE = 0..1800
+  LIMIT_MIN_RANGE = 0..1680
 
   MAXIMUM_GUEST_NUMBER = 12
   ACCEPTABLE_PRIVATE_NUMBER = 6
