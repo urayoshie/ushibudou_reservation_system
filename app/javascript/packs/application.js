@@ -17,6 +17,15 @@ document.addEventListener('turbolinks:load', () => {
     menuSortable();
   } else if (document.getElementById('num-box')) {
     reservationSystem();
+  } else if (document.querySelector('.slider')) {
+    rangeSlider();
   }
-  rangeSlider();
+
+  const monthForm = document.getElementById('month-form');
+  if (monthForm) {
+    const chosenMonth = document.getElementById('chosen_month');
+    chosenMonth.addEventListener('change', () => {
+      monthForm.submit();
+    });
+  }
 });

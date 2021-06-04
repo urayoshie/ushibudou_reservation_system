@@ -6,8 +6,8 @@ require "csv"
 end
 
 # 規定の営業・休業
-date4 = Date.new(2021, 5, 10)
-DayCondition.create!(applicable_date: date4, wday: 3, start_min: nil, end_min: nil)
+# date4 = Date.new(2021, 5, 10)
+# DayCondition.create!(applicable_date: date4, wday: 3, start_min: nil, end_min: nil)
 
 date = Date.new(2021, 6, 1)
 DayCondition.create!(applicable_date: date, wday: 0, start_min: 900, end_min: 1500)
@@ -144,4 +144,4 @@ end
 puts "メニューのインポートに成功しました！"
 
 # reservation_statuses テーブルを最新の状態に更新
-# system("rails reservation:update_reservation_status")
+system("rails reservation:update_reservation_status")

@@ -48,7 +48,7 @@ export const reservationSystem = () => {
     const index = availableTime.indexOf(time);
     if (index >= 0) {
       timeBox.selectedIndex = index + 1;
-    } else {
+    } else if (modalButton) {
       modalButton.disabled = true;
     }
   };
@@ -195,7 +195,7 @@ export const reservationSystem = () => {
         request: guestRequest.value,
         guest_number: numBox.value,
         date: calendar.value,
-        time: timeBox.value,
+        start_time: timeBox.value,
       },
     };
 

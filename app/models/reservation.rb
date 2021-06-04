@@ -4,6 +4,10 @@ class Reservation < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   VALID_PHONE_NUMBER_REGEX = /\A0\d{1,3}-?\d{2,4}-?\d{3,4}\z/
 
+  UNIT_MIN = ConvertTime::UNIT_MIN  # 15
+  LIMITE_UNITS = 8
+  LIMIT_MIN_RANGE = 0..1800
+
   MAXIMUM_GUEST_NUMBER = 12
   ACCEPTABLE_PRIVATE_NUMBER = 6
   RESERVED_MIN = UNIT_MIN * LIMITE_UNITS
@@ -16,8 +20,9 @@ class Reservation < ApplicationRecord
   PAST_ERROR_MESSAGE = "は本日以降の日付を選択してください"
   PAST_MONTHS_ERROR_MESSAGE = "は本日より#{PERIOD_MONTH.in_months.round}ヶ月未満の日付を選択してください"
   CLOSED_MESSAGE = "は営業日を選択してください"
-  UNIT_MESSAGE = "は#{UNIT_MIN}分ごとの時間を選択してください"
   CLOSED_HOURS_MESSAGE = "は営業時間内で選択してください"
+  UNIT_MESSAGE = "は#{UNIT_MIN}分ごとの時間を選択してください"
+  UNDER_LIMIT_UNITE_MESSAGE = "と終了時間は#{UNIT_MIN * LIMITE_UNITS}分以上の間隔を空けてください。"
 
   validates :guest_number, :date, presence: true
   validates :name, presence: true, length: { maximum: 50 }
@@ -37,6 +42,10 @@ class Reservation < ApplicationRecord
   validate :within_business_hours
 
   def start_time
+    ConvertTime.to_time(start_min)
+  end
+
+  def start_datetime
     date.in_time_zone + start_min.minutes
   end
 
@@ -109,11 +118,16 @@ class Reservation < ApplicationRecord
       open_min, closed_min = fetch_business_hours(date)
 
       # 休業日の場合は空配列を返す
-      if open_min.nil? || closed_min.nil? || min_to_unit(closed_min - open_min) < LIMITE_UNITS
-        return [nil, true]
+      if open_min.nil? || closed_min.nil?
+        message = "休業日に対して、 reserve_list メソッドが動作しました。"
+        OutputLog.error(
+          date: date,
+          open_min: open_min,
+          closed_min: closed_min,
+          message: message,
+        )
+        raise message
       end
-
-      error = false
 
       reservation_list = []
       total_units = ConvertTime.total_units(open_min, closed_min)
@@ -124,19 +138,28 @@ class Reservation < ApplicationRecord
       where(date: date).where.not(id: exclude_reservation_id).each do |reservation|
         diff_minutes = reservation.start_min - open_min
         start_unit = ConvertTime.min_to_unit(diff_minutes)
-        if start_unit < 0 || start_unit >= total_units
-          error = true
-          next
+        if start_unit < 0 || start_unit > total_units - LIMITE_UNITS
+          message = "予約可能ではない時間に予約が入っています。"
+          OutputLog.error(
+            reservation_id: reservation.id,
+            date: date,
+            start_min: reservation.start_min,
+            open_min: open_min,
+            closed_min: closed_min,
+            message: message,
+          )
+          raise message
         end
+
         LIMITE_UNITS.times do |i|
           reservation_params = reservation_list[start_unit + i]
           if reservation.guest_number >= ACCEPTABLE_PRIVATE_NUMBER
             if reservation_params[:private_reservation]
               # 貸切の二重予約があったとき
-              error = reservation_params[:error] = true
+              reservation_params[:error] = true
             elsif reservation_params[:total_number] > 0
               # 予約があるのに貸切しようとしたとき
-              error = reservation_params[:error] = true
+              reservation_params[:error] = true
             else
               reservation_params[:private_reservation] = true
             end
@@ -146,19 +169,17 @@ class Reservation < ApplicationRecord
 
           # 予約人数がオーバーしているとき
           if reservation_params[:total_number] > MAXIMUM_GUEST_NUMBER
-            error = reservation_params[:error] = true
+            reservation_params[:error] = true
           end
         end
       end
 
-      [reservation_list, error]
+      reservation_list
     end
 
     # 1日(15:00~23:00)2時間単位での予約最大人数と貸切予約の有無の配列ハッシュデータ
     def biggest_num_list(datetime, exclude_reservation_id = nil)
-      reservation_list, error = reserve_list(datetime, exclude_reservation_id)
-
-      return [nil, error] if error
+      reservation_list = reserve_list(datetime, exclude_reservation_id)
 
       biggest_number_list = []
 
@@ -188,7 +209,7 @@ class Reservation < ApplicationRecord
       reservable_array
     end
 
-    # 貸切予約が出来るかどうかの真偽配列
+    # ����切予約���出来るかどうかの真偽配列
     def choose_private_reservation(datetime, exclude_reservation_id = nil)
       reservable_private_reservation = []
       biggest_num_list(datetime, exclude_reservation_id).map do |data|
@@ -198,7 +219,7 @@ class Reservation < ApplicationRecord
     end
 
     def reservable_list(datetime, guest_number, exclude_reservation_id = nil)
-      # 6人以上なら貸切用のメソッド, 6人未満なら人数用のメソッド
+      # 6人以上なら貸切用の��ソッド, 6人未満�������ら人数用のメソッド
       if guest_number >= 6
         choose_private_reservation(datetime, exclude_reservation_id)
       else

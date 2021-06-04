@@ -12,7 +12,13 @@ class ReservationStatus < ApplicationRecord
     biggest_list = Reservation.biggest_num_list(date)
     error = biggest_list.any? { |data| data[:error] }
 
-    raise RESERVATION_OVER_MESSAGE if error
+    if error
+      OutputLog.info(
+        date: date,
+        message: "予約のできない状態で予約が入ろうとしました。",
+      )
+      raise RESERVATION_OVER_MESSAGE
+    end
 
     # array = []
     # biggest_list.each do |list|

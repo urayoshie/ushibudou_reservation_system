@@ -1,16 +1,29 @@
 class DayCondition < ApplicationRecord
   include PerUnitMin
   DAY_LIST = (0..6)
+
   validates :applicable_date, uniqueness: {
                                 scope: :wday,
                                 message: "で同じ曜日のデータは複数登録できません",
                               }
   validates :wday, presence: true, numericality: { in: DAY_LIST }
-  validates :start_min, numericality: { in: LIMIT_MIN_RANGE }
-  validates :end_min, numericality: { in: LIMIT_MIN_RANGE }
 
   validate :per_unit_start_min
   validate :per_unit_end_min
+  validate :under_limit_unit
+  validate :prevent_earlier_date
+
+  PREVENT_EARLIER_DATE_MESSAGE = "は初期設定より早い日付で登録できません"
+
+  # 初期設定より早い日付で登録できないようにする
+  def prevent_earlier_date
+    if DayCondition.count.positive?
+      earliest_date = DayCondition.order(applicable_date: :asc).first&.applicable_date
+      if applicable_date < earliest_date
+        errors.add(:applicable_date, PREVENT_EARLIER_DATE_MESSAGE)
+      end
+    end
+  end
 
   # start_date から end_date までの規定営業日の配列を取得
   def self.default_business_dates(start_date, end_date)
@@ -34,7 +47,6 @@ class DayCondition < ApplicationRecord
 
     # business_wdays = a_week - closed_days
 
-    # binding.pry
     # closed_day = DayCondition.where(start_min: nil).where("applicable_date <= ?", end_date).distinct.pluck(:wday)
   end
 

@@ -34,8 +34,10 @@ class Admin::DayConditionsController < Admin::AdminController
 
         affected_wdays = new_day_condition_params.map { |param| param["wday"].to_i }
         # 変更された曜日の内、applicable_date 以降で、予約が入っている日付の配列
-        start_time = params[:applicable_date].to_date.beginning_of_day
-        affected_dates = Reservation.select(:start_at).where("start_at >= ?", start_time).map { |reservation| reservation.start_at.to_date }.uniq.select { |date| date.wday.in?(affected_wdays) }
+        applicable_date = params[:applicable_date].to_date
+        affected_dates = Reservation.where("date >= ?", applicable_date).distinct.pluck(:date).select do |date|
+          date.wday.in?(affected_wdays)
+        end
 
         affected_dates.each do |date|
           ReservationStatus.update_reservation_status!(date)

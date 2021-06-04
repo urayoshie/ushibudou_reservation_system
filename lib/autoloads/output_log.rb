@@ -3,7 +3,7 @@ class OutputLog
     def error(**params)
       message = format(params)
       Rails.logger.error(message)
-      SlackNotification.execute(message) if Rails.env.production?
+      SlackNotification.execute(message) # if Rails.env.production?
     end
 
     def info

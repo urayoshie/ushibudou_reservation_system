@@ -7,12 +7,10 @@ class ReservationsController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      time = reservation_params[:start_min]
-      params[:reservation][:start_min] = ConvertTime.to_min(params[:reservation][:start_min])
       reservation = Reservation.create!(reservation_params)
       ReservationStatus.update_reservation_status!(reservation.date)
-
-      date = I18n.t(reservation.date, format: :info)
+      date = I18n.l(reservation.date, format: :info)
+      time = params[:reservation][:time]
       flash[:notice] = "#{reservation.guest_number}名様 / #{date} / #{time}"
       render json: {}, status: :no_content
     end
@@ -75,6 +73,10 @@ class ReservationsController < ApplicationController
   private
 
   def reservation_params
-    params.require(:reservation).permit(:name, :email, :phone_number, :request, :guest_number, :date, :start_min)
+    params.require(:reservation).permit(:name, :email, :phone_number, :request, :guest_number, :date).merge build_time_param
+  end
+
+  def build_time_param
+    { start_min: ConvertTime.to_min(params[:reservation][:start_time]) }
   end
 end
