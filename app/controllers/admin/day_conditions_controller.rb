@@ -1,10 +1,12 @@
 class Admin::DayConditionsController < Admin::AdminController
   def index
     @day_conditions = DayCondition.order(:applicable_date, :wday)
+    @days = Reservation::DAYS
+    @initial_date = DayCondition.initial_date
   end
 
   def new
-    @days = %w[日 月 火 水 木 金 土]
+    @days = Reservation::DAYS
     if DayCondition.exists?
       # 2回目以降
       today = Date.current
@@ -15,6 +17,7 @@ class Admin::DayConditionsController < Admin::AdminController
         index = (day_conditions.size - 1) - day_conditions.reverse.find_index { |day_condition| next_occurring_date >= day_condition.applicable_date }
         @day_conditions[wday] = day_conditions[index..]
       end
+      @initial_date = DayCondition.initial_date
       render :new
     else
       # 初回
@@ -55,8 +58,12 @@ class Admin::DayConditionsController < Admin::AdminController
 
   def destroy
     @day_condition = DayCondition.find(params[:id])
-    @day_condition.destroy!
-    redirect_to admin_day_conditions_path, notice: "day_condition was successfully destroyed."
+    if @day_condition.applicable_date == DayCondition.initial_date
+      flash[:alert] = "初期設定の削除はできません。"
+    else
+      @day_condition.destroy!
+    end
+    redirect_to admin_day_conditions_path
   end
 
   private

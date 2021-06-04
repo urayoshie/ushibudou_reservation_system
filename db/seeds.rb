@@ -9,14 +9,14 @@ end
 # date4 = Date.new(2021, 5, 10)
 # DayCondition.create!(applicable_date: date4, wday: 3, start_min: nil, end_min: nil)
 
-date = Date.new(2021, 6, 1)
-DayCondition.create!(applicable_date: date, wday: 0, start_min: 900, end_min: 1500)
+date = Date.new(2021, 6, 4)
+DayCondition.create!(applicable_date: date, wday: 0, start_min: 690, end_min: 1500)
 DayCondition.create!(applicable_date: date, wday: 1, start_min: 900, end_min: 1500)
 DayCondition.create!(applicable_date: date, wday: 2, start_min: nil, end_min: nil)
 DayCondition.create!(applicable_date: date, wday: 3, start_min: 900, end_min: 1500)
 DayCondition.create!(applicable_date: date, wday: 4, start_min: 900, end_min: 1500)
 DayCondition.create!(applicable_date: date, wday: 5, start_min: 900, end_min: 1500)
-DayCondition.create!(applicable_date: date, wday: 6, start_min: 900, end_min: 1500)
+DayCondition.create!(applicable_date: date, wday: 6, start_min: 690, end_min: 1500)
 
 date2 = Date.new(2021, 7, 10)
 DayCondition.create!(applicable_date: date2, wday: 0, start_min: 900, end_min: 1200)

@@ -1,6 +1,14 @@
 module PerUnitMin
   extend ActiveSupport::Concern
 
+  def start_time
+    start_min.present? ? ConvertTime.to_time(start_min) : nil
+  end
+
+  def end_time
+    respond_to?(:end_min) && end_min.present? ? ConvertTime.to_time(end_min) : nil
+  end
+
   def per_unit_start_min
     return if start_min.nil?
     unless start_min % Reservation::UNIT_MIN == 0

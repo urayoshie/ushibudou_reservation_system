@@ -13,6 +13,7 @@ class Reservation < ApplicationRecord
   RESERVED_MIN = UNIT_MIN * LIMITE_UNITS
   DEFAULT_START_MIN = 900
   DEFAULT_END_MIN = 1500
+  DAYS = %w[日 月 火 水 木 金 土]
 
   # 予約できる期間
   PERIOD_MONTH = 3.months
@@ -38,7 +39,7 @@ class Reservation < ApplicationRecord
   validate :past_date
   # start_min は15の倍数
   validate :per_unit_start_min
-  # start_at が 営業日 かつ 開始時間〜終了時間(15×8 分前) かつ 15分区切り であること
+  # date が 営業日 かつ start_min が 開始時間〜終了時間(15×8 分前) かつ 15分区切り であること
   validate :within_business_hours
 
   def start_time

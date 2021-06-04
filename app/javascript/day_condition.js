@@ -4,12 +4,15 @@ import 'flatpickr/dist/l10n/ja';
 
 export const rangeSlider = () => {
   const isNew = document.getElementById('day-conditions-0-edit');
-  const config = {
+  let config = {
     locale: 'ja',
     // enable: JSON.parse(calendar.dataset.arr),
     defaultDate: 'today',
     disableMobile: 'true',
   };
+  const minDate = document.getElementById('flatpickr').dataset.min_date;
+  if (minDate) config.minDate = minDate;
+
   flatpickr('#flatpickr', config);
 
   const ranges = document.querySelectorAll('.slider');

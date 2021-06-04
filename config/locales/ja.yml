@@ -27,6 +27,7 @@ ja:
       month: '%Y-%m'
       month_display: '%Y年%-m月'
       date: '%Y/%m/%d(%a)'
+      default: '%Y-%m-%d'
   time:
     formats:
       date: '%Y/%m/%d(%a)'
