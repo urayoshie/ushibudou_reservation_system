@@ -1,4 +1,7 @@
-<h1>規定営業日&休業日 一覧ページ</h1>
-<%= render @day_conditions %>
-<div class="create_new"><%= link_to "規定日新規作成", new_admin_day_condition_path %></div>
-<%= link_to '管理画面トップページ', admin_root_path %>
+<h2 class="day-condition-index">規定営業日&休業日 一覧ページ</h2>
+<div class="day-condition-record-index">
+  <%= render @day_conditions %>
+</div>
+<div class="create_new-day-condition"><%= link_to "規定日新規作成", new_admin_day_condition_path %></div>
+<div class="setting-holidays"><%= link_to "祝日設定", holiday_admin_temporary_dates_path %></div>
+<div class="return-admin-top"><%= link_to '管理画面トップページ', admin_root_path %></div>

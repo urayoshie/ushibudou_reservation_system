@@ -3,17 +3,20 @@ import 'flatpickr';
 import 'flatpickr/dist/l10n/ja';
 
 export const temporaryDateRangeSlider = () => {
-  const minDate = document.getElementById('flatpickr').dataset.min_date;
-  const defaultDate = document.getElementById('flatpickr').dataset.default_date;
-  let config = {
-    locale: 'ja',
-    // enable: JSON.parse(calendar.dataset.arr),
-    minDate: minDate,
-    defaultDate: defaultDate || 'today',
-    disableMobile: 'true',
-  };
+  const calendar = document.getElementById('flatpickr');
+  if (calendar) {
+    const minDate = calendar.dataset.min_date;
+    const defaultDate = calendar.dataset.default_date;
+    let config = {
+      locale: 'ja',
+      // enable: JSON.parse(calendar.dataset.arr),
+      minDate: minDate,
+      defaultDate: defaultDate || 'today',
+      disableMobile: 'true',
+    };
 
-  flatpickr('#flatpickr', config);
+    flatpickr('#flatpickr', config);
+  }
 
   const range = document.querySelector('.slider');
   const rangeMin = 0,

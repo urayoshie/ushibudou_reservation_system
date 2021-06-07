@@ -9,19 +9,25 @@
       </ul>
     </div>
   <% end %>
-  <div>
+  <div class="menu-genre">
     <%= form.label :genre %>
-    <%= form.select :genre, Menu.genres.keys %>
+    <div class="menu-genre-content">
+      <%= form.select :genre, Menu.genres.keys %>
+    </div>
   </div>
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <div class="menu-name-content">
+      <%= form.text_field :name %>
+    </div>
   </div>
   <div class="field">
     <%= form.label :price %>
-    <%= form.text_area :price %>
+    <div class="menu-price-content">
+      <%= form.text_field :price %>
+    </div>
   </div>
-  <div class="actions">
+  <div class="menu-submit">
     <%= form.submit %>
   </div>
 <% end %>

@@ -1,4 +1,8 @@
-<h1>メニュー/編集</h1>
-<%= render 'form', menu: @menu, url: admin_menu_path(@menu) %>
-<%= link_to '詳細', admin_menu_path(@menu) %> |
-<%= link_to '戻る', admin_menus_path %>
+<div class="menu-edit-container">
+  <h2 class="menu-edit-title">メニュー/編集</h2>
+  <%= render 'form', menu: @menu, url: admin_menu_path(@menu) %>
+  <div class="return-show-index">
+    <%= link_to '詳細', admin_menu_path(@menu) %> |
+    <%= link_to 'メニュー一覧へ戻る', admin_menus_path %>
+  </div>
+</div>

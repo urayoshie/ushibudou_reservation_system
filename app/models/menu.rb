@@ -13,4 +13,10 @@ class Menu < ApplicationRecord
     main: 4,
     drink: 5,
   }
+
+  def self.sort_position!
+    order(genre: :asc, position: :asc).each.with_index(1) do |menu, index|
+      menu.insert_at!(index) if menu.position != index
+    end
+  end
 end

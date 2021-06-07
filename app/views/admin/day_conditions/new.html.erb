@@ -1,12 +1,26 @@
-<h1>規定営業日・休業日追加登録</h1>
+<h2 class="new_day_condition">規定営業日・休業日追加登録</h2>
 <%= form_with url: admin_day_conditions_path, scope: :day_condition do |form| %>
+  <div class="day-condition-flatpickr">
+    規定営業または休業の日付を選択してください。 
+  </div>
   <input type="text" name="applicable_date" id="flatpickr" data-min_date="<%= l(@initial_date) %>">
-  <div style="padding: 2rem;">
+  <div class="day-condition-slider">
+    <div class="day-condition-new-instraction">
+      ※ チェックボックス<br>
+      左: 追加する規定営業または休業の曜日にチェックを入れてください。<br>
+      右: 追加する曜日が営業の場合はチェックを入れ、休業の場合はチェックを外してください。
+    </div>
     <% (0..6).to_a.each do |wday| %>
       <%= render "slider", wday: wday %>
     <% end %>
   </div>
-  <%= form.submit "送信" %>
+  <div class="day-condition-submit">
+    <%= form.submit "確定する" %>
+  </div>
 <% end %>
-<%= link_to "規定営業日&休業日 一覧ページ", admin_day_conditions_path %>
-<%= link_to '管理画面トップページ', admin_root_path %>
+<div class="new-day-condition-index">
+  <%= link_to "規定営業日&休業日 一覧ページ", admin_day_conditions_path %>
+</div>
+<div class="return-admin-top">
+  <%= link_to '管理画面トップページ', admin_root_path %>
+</div>

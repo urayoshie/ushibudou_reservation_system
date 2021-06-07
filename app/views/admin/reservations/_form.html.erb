@@ -1,33 +1,37 @@
-<%= form_with(model: @reservation, url: admin_reservation_path(reservation)) do |form| %>
-  <div class="field">
-    <%= form.label :guest_number, for: "num-box" %>
-    <%= form.text_field :guest_number, id: "num-box" %>
-  </div>
-  <div class="reservation_date">
-    <%= form.label :date, "予約日" %>
-    <%= form.text_field :date, id: "flatpickr" %>
-  </div>
-  <label for="time-box" id="reservation_time">予約時間</label>
-  <select name="reservation[start_time]" id="time-box" required>
-    <option selected><%= @reservation.start_time %></option>
-  </select>
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.text_field :email %>
-  </div>
-  <div class="field">
-    <%= form.label :phone_number %>
-    <%= form.text_field :phone_number %>
-  </div>
-  <div class="field">
-    <%= form.label :request %>
-    <%= form.text_area :request %>
-  </div>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+<div class="admin-reservation-edit">
+  <%= form_with(model: @reservation, url: admin_reservation_path(reservation)) do |form| %>
+    <div class="field">
+      <%= form.label :guest_number, for: "num-box" %>
+      <div class="admin-reservation-guest-num"><%= form.text_field :guest_number, id: "num-box" %></div>
+    </div>
+    <div class="reservation_date">
+      <div class="reservation-date-title"><%= form.label :date, "予約日" %></div>
+      <div class="reservation-flatpickr"><%= form.text_field :date, id: "flatpickr" %></div>
+    </div>
+    <label for="time-box" id="reservation_time">予約時間</label>
+    <div class="admin-reservation-time">
+      <select name="reservation[start_time]" id="time-box" required>
+        <option selected><%= @reservation.start_time %></option>
+      </select>
+    </div>
+    <div class="field">
+      <%= form.label :name %>
+      <div class="admin-guest-name"><%= form.text_field :name %></div>
+    </div>
+    <div class="field">
+      <%= form.label :email %>
+      <div class="admin-guest-email"><%= form.text_field :email %></div>
+    </div>
+    <div class="field">
+      <%= form.label :phone_number %>
+      <div class="admin-guest-phone"><%= form.text_field :phone_number %></div>
+    </div>
+    <div class="field">
+      <%= form.label :request %>
+      <div class="admin-guest-resuest"><%= form.text_area :request %></div>
+    </div>
+    <div class="actions" id="admin-reservation-edit-submit">
+      <%= form.submit %>
+    </div>
+  <% end %>
+</div>

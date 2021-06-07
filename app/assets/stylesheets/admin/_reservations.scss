@@ -1,0 +1,57 @@
+// 管理画面予約一覧(admin/index.html)
+.admin-reservatons-index {
+  margin-left: 30px;
+  margin-top: 40px;
+}
+
+.reservation-list-month {
+  margin-left: 30px;
+}
+
+.reservation-list {
+  margin-left: 15px;
+  margin-top: 20px;
+  margin-right: 5px;
+}
+
+// 予約詳細ページ(admin/show.html)
+.admin-reservation-edit {
+  margin-left: 30px;
+}
+.reservation_details {
+  margin-left: 30px;
+  margin-top: 50px;
+}
+
+.reservation_edit_back {
+  margin-left: 30px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
+// 予約編集ページ(admin/edit.html, _form.html)
+.admin-reservation-edit {
+  margin-top: 30px;
+}
+
+.reservation-date-title {
+  margin-top: 20px;
+}
+
+.reservation-flatpickr {
+  margin-bottom: 25px;
+  margin-left: -30px;
+}
+
+#reservation_time {
+  padding-top: 20px;
+}
+
+#admin-reservation-edit-submit {
+  margin-top: 30px;
+}
+.links-return {
+  margin-left: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}

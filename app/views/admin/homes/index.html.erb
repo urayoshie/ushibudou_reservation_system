@@ -1,6 +1,18 @@
-<h1>管理者画面 トップページ</h1>
-<%= link_to "お知らせ新規投稿", new_admin_notification_path %>
-<%= link_to "メニュー新規投稿", new_admin_menu_path %>
-<%= link_to "予約一覧", admin_reservations_path %>
-<%= link_to "規定営業・休業設定", new_admin_day_condition_path %>
-<%= link_to "臨時営業・休業設定", new_admin_temporary_date_path %>
+<div class="admin-top">
+  <h2>管理一覧</h2>
+  <div class="top-news">
+    <%= link_to "お知らせ新規投稿", new_admin_notification_path %>
+  </div>
+  <div class="top-menu">
+    <%= link_to "メニュー新規投稿", new_admin_menu_path %>
+  </div>
+  <div class="top-reservation">
+    <%= link_to "予約一覧", admin_reservations_path %>
+  </div>
+  <div class="top-default">
+    <%= link_to "規定営業・休業設定", new_admin_day_condition_path %>
+  </div>
+  <div class="top-temporary">
+    <%= link_to "臨時営業・休業設定", new_admin_temporary_date_path %>
+  </div>
+</div>
