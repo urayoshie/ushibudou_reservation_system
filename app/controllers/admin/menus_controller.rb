@@ -17,26 +17,29 @@ class Admin::MenusController < Admin::AdminController
 
   def create
     @menu = Menu.new(menu_params)
-    if @menu.save
-      redirect_to admin_menus_path, notice: "Menu was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    Menu.transaction do
+      @menu.save!
+      Menu.sort_position!
     end
+    redirect_to admin_menus_path, notice: "メニューを作成しました"
   end
 
   # PATCH/PUT /admin/menus/1 or /admin/menus/1.json
   def update
-    if @menu.update(menu_params)
-      redirect_to admin_menus_path, notice: "Menu was successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
+    Menu.transaction do
+      @menu.update!(menu_params)
+      Menu.sort_position!
     end
+    redirect_to admin_menus_path, notice: "メニューを更新しました。"
   end
 
   # DELETE /admin/menus/1 or /admin/menus/1.json
   def destroy
-    @menu.destroy!
-    redirect_to admin_menus_path, notice: "Menu was successfully destroyed."
+    Menu.transaction do
+      @menu.destroy!
+      Menu.sort_position!
+    end
+    redirect_to admin_menus_path, notice: "メニューを削除しました。"
   end
 
   private

@@ -19,6 +19,11 @@ Rails.application.routes.draw do
     resources :sortable_menus, only: :update
     resources :reservations
     resources :day_conditions
-    resources :temporary_dates
+    resources :temporary_dates do
+      collection do
+        get "holiday"
+        post "holiday"
+      end
+    end
   end
 end

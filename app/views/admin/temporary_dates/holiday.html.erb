@@ -1,0 +1,11 @@
+<h2 class="setting-holidays-title">祝日設定</h2>
+<%= form_with url: holiday_admin_temporary_dates_path, scope: :temporary_date do |form| %>
+  <div style="padding: 2rem;">
+    <%= render "slider", slider_start: Reservation::DEFAULT_START_MIN, slider_end: Reservation::DEFAULT_END_MIN, slider_open: "true" %>
+  </div>
+  <div class="holiday-submit">
+    <%= form.submit "確定する" %>
+  </div>
+<% end %>
+<div class="return-temporary-index"><%= link_to "臨時営業日・休業日 一覧ページ", admin_temporary_dates_path %></div>
+<div class="return-admin-top"><%= link_to '管理画面トップページ', admin_root_path %></div>

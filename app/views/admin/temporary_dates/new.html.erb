@@ -1,10 +1,18 @@
-<h1>臨時営業日・休業日登録</h1>
+<div class="temporary-upper-container">
+  <h2 class="temporary-title">臨時営業日・休業日登録</h2>
+  <div class="temporary-date">
+    臨時営業または休業の日付を選択してください。 
+  </div>
+</div>
 <%= form_with url: admin_temporary_dates_path, scope: :temporary_date do |form| %>
   <input type="text" name="temporary_date[date]" id="flatpickr" data-min_date="<%= l(@initial_date) %>">
   <div style="padding: 2rem;">
     <%= render "slider", slider_start: Reservation::DEFAULT_START_MIN, slider_end: Reservation::DEFAULT_END_MIN, slider_open: "true" %>
+    <div class="temporary-slider>">営業の場合は時間を選択してください</div>
   </div>
-  <%= form.submit "送信" %>
+  <div class="temporary-submit">
+    <%= form.submit "確定する" %>
+  </div>
 <% end %>
-<%= link_to "臨時営業日・休業日 一覧ページ", admin_temporary_dates_path %>
-<%= link_to '管理画面トップページ', admin_root_path %>
+<div class="return-temporary-index"><%= link_to "臨時営業日・休業日 一覧ページ", admin_temporary_dates_path %></div>
+<div class="return-admin-top-from-temporary"><%= link_to '管理画面トップページ', admin_root_path %></div>

@@ -5,3 +5,4 @@
 <% unless day_condition.applicable_date == @initial_date %>
   <%= link_to '削除', admin_day_condition_path(day_condition), method: :delete, data: { confirm: '削除しますか?' } %>
 <% end %>
+<hr>

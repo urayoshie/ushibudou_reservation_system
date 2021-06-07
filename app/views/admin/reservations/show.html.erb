@@ -29,6 +29,6 @@
   </p>
 </div>
 <div class="reservation_edit_back">
-  <%= link_to '編集', edit_admin_reservation_path(@reservation) %>
-  <%= link_to '戻る', admin_reservations_path(chosen_month: l(@reservation.date, format: :month)) %>
+  <%= link_to '編集', edit_admin_reservation_path(@reservation) %> |
+  <%= link_to '予約一覧へ戻る', admin_reservations_path(chosen_month: l(@reservation.date, format: :month)) %>
 </div>

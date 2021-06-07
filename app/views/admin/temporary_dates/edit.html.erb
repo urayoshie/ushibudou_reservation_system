@@ -1,13 +1,18 @@
 <% slider_open = @temporary_date.start_min.present? ? "true" : nil %>
 <% start_min = @temporary_date.start_min || Reservation::DEFAULT_END_MIN %>
 <% end_min = @temporary_date.end_min || Reservation::DEFAULT_END_MIN %>
-<h1>臨時営業日・休業日編集</h1>
+<h2 class="temporary-edit">臨時営業日・休業日編集</h2>
 <%= form_with url: admin_temporary_date_path(@temporary_date), scope: :temporary_date, method: :patch do |form| %>
+  <div class="temporary-date-flatpickr">
+    編集する日付を選択してください。 
+  </div>
   <input type="text" name="temporary_date[date]" id="flatpickr" data-min_date="<%= l(@initial_date) %>" data-default_date="<%= l(@temporary_date.date) %>">
-  <div style="padding: 2rem;">
+  <div class="temporary-edit-slider">
     <%= render "slider", slider_start: start_min, slider_end: end_min, slider_open: slider_open %>
   </div>
-  <%= form.submit "送信" %>
+  <div class="temporary-edit-submit">
+    <%= form.submit "編集確定" %>
+  </div>
 <% end %>
-<%= link_to "臨時営業日・休業日 一覧ページ", admin_temporary_dates_path %>
-<%= link_to '管理画面トップページ', admin_root_path %>
+<div class="return-temporary-index"><%= link_to "臨時営業日・休業日 一覧ページ", admin_temporary_dates_path %></div>
+<div class="return-admin-top"><%= link_to '管理画面トップページ', admin_root_path %></div>

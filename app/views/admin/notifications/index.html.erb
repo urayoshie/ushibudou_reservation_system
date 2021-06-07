@@ -1,5 +1,5 @@
-<div class="all_list">
-  <h1>お知らせ一覧</h1>
+<div class="news-all-list">
+  <h2>お知らせ一覧</h2>
   <table class="list">
     <thead>
       <tr>
@@ -22,6 +22,10 @@
       <% end %>
     </tbody>
   </table>
-  <br>
-  <%= link_to '新規お知らせ投稿', new_admin_notification_path %>
+  <div class="return-new-news">
+    <%= link_to '新規お知らせ投稿', new_admin_notification_path %>
+  </div>
+  <div class="return-top-news">
+    <%= link_to '管理画面トップページ', admin_root_path %>
+  </div>
 </div>

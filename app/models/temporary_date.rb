@@ -8,6 +8,7 @@ class TemporaryDate < ApplicationRecord
   validate :under_limit_unit
   validate :prevent_without_default
   validate :prevent_earlier_date
+  belongs_to :holiday, optional: true
 
   PREVENT_WITHOUT_DEFAULT_MESSAGE = "は規定の営業・休業設定後でなければ登録できません"
   PREVENT_EARLIER_DATE_MESSAGE = "は初期設定より早い日付で登録できません"

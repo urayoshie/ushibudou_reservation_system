@@ -3,7 +3,7 @@ class Admin::TemporaryDatesController < Admin::AdminController
   before_action :set_temporary_date, only: [:edit, :update, :destroy]
 
   def index
-    @temporary_dates = TemporaryDate.order(date: :asc)
+    @temporary_dates = TemporaryDate.order(date: :asc).includes(:holiday)
   end
 
   def new
@@ -42,6 +42,21 @@ class Admin::TemporaryDatesController < Admin::AdminController
       ReservationStatus.update_reservation_status!(date)
     end
     redirect_to admin_temporary_dates_path
+  end
+
+  def holiday
+    if request.post?
+      holidays = Holiday.where("date >= ?", DayCondition.initial_date).order(date: :asc)
+      Holiday.transaction do
+        holidays.each do |holiday|
+          temporary_date = TemporaryDate.find_or_initialize_by(date: holiday.date)
+          temporary_date.holiday_id = holiday.id
+          temporary_date.assign_attributes(temporary_date_params.slice(:start_min, :end_min))
+          temporary_date.save!
+        end
+      end
+      redirect_to admin_temporary_dates_path
+    end
   end
 
   private

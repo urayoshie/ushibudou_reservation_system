@@ -1,106 +1,25 @@
 .log_out {
-  margin-left: 130px;
+  margin-left: 30px;
   margin-top: 40px;
   text-decoration: none;
 }
 
-// お知らせ機能
-th,
-td {
-  border: solid 1px;
-  padding: 10px;
-  text-decoration: none;
+.admin-top {
+  margin-left: 30px;
 }
 
-tr:nth-child(odd) {
-  background-color: #eeeeee;
+.top-menu {
+  margin-top: 15px;
 }
 
-.all_list {
-  margin-left: 180px;
+.top-reservation {
+  margin-top: 15px;
 }
 
-.post_new {
-  margin-left: 180px;
+.top-default {
+  margin-top: 15px;
 }
 
-.show_all {
-  text-align: center;
-}
-
-.show_edit_back {
-  margin-left: 180px;
-}
-
-// メニューテーブル
-// .list {
-//   margin-left: 130px;
-// }
-
-.menu {
-  margin-left: 130px;
-}
-
-.menu-draggable {
-  display: table;
-}
-
-.item {
-  display: table-cell;
-  border: solid 1px #999;
-  width: 150px;
-}
-
-.title {
-  display: table-cell;
-  border: solid 1px #999;
-  width: 150px;
-  text-align: center;
-}
-
-.menu-position,
-.menu-edit,
-.menu-delete {
-  text-align: center;
-}
-
-.new-menu {
-  margin-left: 130px;
-}
-
-@media screen and (max-width: 767px) {
-  h1 {
-    font-size: 20px;
-  }
-
-  .list {
-    margin-left: 5px;
-  }
-
-  .menu {
-    margin-left: 5px;
-  }
-
-  .log_out {
-    margin-left: 5px;
-  }
-
-  .new-menu {
-    margin-left: 5px;
-  }
-}
-
-// @media screen and (max-width: 480px) {
-
-// }
-
-// メニュー新規投稿
-.menu_new {
-  margin-left: 70px;
-}
-
-@media screen and (max-width: 480px) {
-  h1 {
-    font-size: 20px;
-  }
+.top-temporary {
+  margin-top: 15px;
 }

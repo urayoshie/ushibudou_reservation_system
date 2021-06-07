@@ -1,0 +1,88 @@
+// 新規お知らせ投稿(new_html)
+.post_new {
+  margin-left: 30px;
+}
+
+.return-news-index {
+  margin-top: 30px;
+}
+
+.return-top-news {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+// _form_html
+.field {
+  margin-top: 25px;
+}
+
+.news-submit {
+  margin-top: 40px;
+}
+
+// お知らせ一覧(index.html
+.news-all-list {
+  margin-left: 30px;
+}
+
+.return-new-news {
+  margin-top: 30px;
+}
+
+.list {
+  margin-right: 15px;
+}
+
+th {
+  text-align: center;
+}
+th,
+td {
+  border: solid 1px;
+  padding: 6px;
+  text-decoration: none;
+}
+
+tr:nth-child(odd) {
+  background-color: #eeeeee;
+}
+
+// お知らせ詳細ページ(show.html)
+.show_all {
+  margin-left: 30px;
+}
+
+.show_edit_back {
+  margin-left: 30px;
+  margin-top: 40px;
+}
+
+.news-show-title {
+  margin-top: 30px;
+}
+
+.news-show-content {
+  margin-top: 30px;
+}
+
+.news-show-content-content {
+  margin-right: 15px;
+}
+
+.news-show-image {
+  margin-top: 30px;
+}
+
+// お知らせ編集(edit.html)
+.news-edit {
+  margin-left: 30px;
+}
+
+.news-edit-container {
+  margin-left: 30px;
+}
+
+.news-edit-return {
+  margin-top: 30px;
+}

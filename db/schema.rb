@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_02_071624) do
-
+ActiveRecord::Schema.define(version: 2021_06_04_074109) do
   create_table "admin_users", charset: "utf8mb4", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -34,6 +33,14 @@ ActiveRecord::Schema.define(version: 2021_06_02_071624) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["applicable_date", "wday"], name: "index_day_conditions_on_applicable_date_and_wday", unique: true
+  end
+
+  create_table "holidays", charset: "utf8mb4", force: :cascade do |t|
+    t.date "date", null: false
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["date"], name: "index_holidays_on_date", unique: true
   end
 
   create_table "menus", charset: "utf8mb4", force: :cascade do |t|
@@ -79,7 +86,10 @@ ActiveRecord::Schema.define(version: 2021_06_02_071624) do
     t.integer "end_min"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "holiday_id"
     t.index ["date"], name: "index_temporary_dates_on_date", unique: true
+    t.index ["holiday_id"], name: "index_temporary_dates_on_holiday_id"
   end
 
+  add_foreign_key "temporary_dates", "holidays"
 end

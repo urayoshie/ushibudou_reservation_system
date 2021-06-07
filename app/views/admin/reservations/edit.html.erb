@@ -1,4 +1,6 @@
-<h1>予約/編集</h1>
+<h2 class="admin-reservation-edit">予約/編集</h2>
 <%= render 'form', reservation: @reservation %>
-<%= link_to '詳細', admin_reservation_path(@reservation) %> |
-<%= link_to '予約一覧へ戻る', admin_reservations_path(chosen_month: l(@reservation.date, format: :month)) %>
+<div class="links-return">
+  <%= link_to '詳細', admin_reservation_path(@reservation) %> |
+  <%= link_to '予約一覧へ戻る', admin_reservations_path(chosen_month: l(@reservation.date, format: :month)) %>
+</div>

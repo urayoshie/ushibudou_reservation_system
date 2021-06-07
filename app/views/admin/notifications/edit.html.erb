@@ -1,6 +1,8 @@
-<h1>お知らせ/編集</h1>
-
-<%= render 'form', notification: @notification, url: admin_notification_path(@notification) %>
-
-<%= link_to '詳細', admin_notification_path(@notification) %> |
-<%= link_to '戻る', admin_notifications_path %>
+<h2 class="news-edit">お知らせ / 編集</h2>
+<div class="news-edit-container">
+  <%= render 'form', notification: @notification, url: admin_notification_path(@notification) %>
+  <div class="news-edit-return">
+    <%= link_to '詳細', admin_notification_path(@notification) %> |
+    <%= link_to '一覧ページへ戻る', admin_notifications_path %>
+  </div>
+</div>
