@@ -10,7 +10,7 @@ class ReservationsController < ApplicationController
       reservation = Reservation.create!(reservation_params)
       ReservationStatus.update_reservation_status!(reservation.date)
       date = I18n.l(reservation.date, format: :info)
-      time = params[:reservation][:time]
+      time = params[:reservation][:start_time]
       flash[:notice] = "#{reservation.guest_number}名様 / #{date} / #{time}"
       render json: {}, status: :no_content
     end

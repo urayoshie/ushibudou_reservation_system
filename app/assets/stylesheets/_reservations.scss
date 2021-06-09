@@ -2,6 +2,139 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
+/*------------------------------
+  ここから下がハンバーガーメニューに関するCSS
+------------------------------*/
+
+.drawer {
+  margin-left: 25px;
+  padding-top: 20px;
+}
+
+/* チェックボックスは非表示に */
+.drawer-hidden {
+  display: none;
+}
+
+/* ハンバーガーアイコンの設置スペース */
+.drawer-open {
+  display: flex;
+  height: 60px;
+  width: 60px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 100;
+  /* 重なり順を一番上に */
+  cursor: pointer;
+}
+
+/* ハンバーガーメニューのアイコン */
+.drawer-open span,
+.drawer-open span:before,
+.drawer-open span:after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 25px;
+  border-radius: 3px;
+  background: #fff;
+  transition: 0.5s;
+  position: absolute;
+}
+
+/* 三本線のうち一番上の棒の位置調整 */
+.drawer-open span:before {
+  bottom: 10px;
+}
+
+/* 三本線のうち一番下の棒の位置調整 */
+.drawer-open span:after {
+  top: 10px;
+}
+
+/* アイコンがクリックされたら真ん中の線を透明にする */
+#drawer-check:checked ~ .drawer-open span {
+  background-color: #ffa500;
+}
+
+/* アイコンがクリックされたらアイコンが×印になように上下の線を回転 */
+#drawer-check:checked ~ .drawer-open span::before {
+  bottom: 0;
+  transform: rotate(45deg);
+}
+
+#drawer-check:checked ~ .drawer-open span::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+/* メニューのデザイン*/
+.drawer-content {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 100%;
+  /* メニューを画面の外に飛ばす */
+  z-index: 99;
+  background: #ffa500;
+  transition: 0.5s;
+  color: #fff;
+}
+
+/* アイコンがクリックされたらメニューを表示 */
+#drawer-check:checked ~ .drawer-content {
+  left: 0px;
+  /* メニューを画面に入れる */
+  width: 350px;
+  height: 570px;
+  background-color: #ffa500;
+}
+
+a {
+  color: #fff;
+  font-family: 'Shippori Mincho', serif;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#li_h {
+  text-align: center;
+  margin: 70px auto;
+}
+
+#li_m {
+  text-align: center;
+  margin: 70px auto;
+}
+
+#li_r {
+  text-align: center;
+  margin: 70px auto;
+}
+
+#li_n {
+  text-align: center;
+  margin: 70px auto;
+}
+
+#li_i {
+  text-align: center;
+  margin: 70px auto;
+}
+
+.drawer-item {
+  transition: 0.3s;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+.drawer-item:hover {
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+}
+
 // modal
 .modal {
   display: none;
@@ -30,15 +163,18 @@ label {
 .reservation_content {
   text-align: center;
   font-size: 20px;
+  font-family: 'Shippori Mincho', serif;
   margin-top: 1px;
 }
 
 .reservation_details {
   text-align: center;
+  font-family: 'Shippori Mincho', serif;
 }
 
 .form {
   text-align: center;
+  font-family: 'Shippori Mincho', serif;
 }
 
 input[type='text'] {
@@ -53,9 +189,14 @@ input[type='text'] {
   text-align: center;
   cursor: pointer;
   padding: 6px 15px;
-  background-color: #ff8856;
+  background-color: #fa9468;
   border: none;
-  color: white;
+  color: #fff;
+  font-family: 'Shippori Mincho', serif;
+}
+
+#reservation_button:hover {
+  background-color: #fe814c;
 }
 
 .sub_text {
@@ -105,6 +246,7 @@ textarea {
 
 #return_button {
   margin-left: 20px;
+  font-family: 'Shippori Mincho', serif;
 }
 
 @media screen and (max-width: 480px) {
@@ -117,13 +259,14 @@ textarea {
 // 予約人数、予約日、予約時間のページ
 
 header {
+  margin-bottom: -20px;
   background-color: black;
   text-align: center;
 }
 
 footer {
   background-color: black;
-  color: white;
+  color: #eeeeee;
   text-align: center;
 }
 
@@ -131,27 +274,31 @@ footer {
   background-color: #eeeeee;
   max-width: 800px;
   height: 335px;
-  margin: 150px auto;
+  margin: 138px auto;
   border-radius: 2%;
 }
 
 h2 {
   font-size: 18px;
-  // font-family: 'Shippori Mincho', serif;
+  font-family: 'Shippori Mincho', serif;
   padding-left: 120px;
   padding-top: 40px;
 }
 
 #modal-button {
-  background-color: #ff8856;
+  background-color: #fa9468;
   padding: 7px 40px;
   font-size: 17px;
   border-radius: 4%;
-  color: white;
+  color: #fff;
   margin-top: 50px;
   margin-left: 320px;
   border: none;
-  // font-family: 'Shippori Mincho', serif;
+  font-family: 'Shippori Mincho', serif;
+}
+
+#modal-button:hover {
+  background-color: #fe814c;
 }
 
 .guest_num {
@@ -159,7 +306,7 @@ h2 {
 }
 
 #guest_num {
-  // font-family: 'Shippori Mincho', serif;
+  font-family: 'Shippori Mincho', serif;
   padding-left: 120px;
 }
 
@@ -170,14 +317,14 @@ h2 {
 
 .notification {
   font-size: 14px;
-  // font-family: 'Shippori Mincho', serif;
+  font-family: 'Shippori Mincho', serif;
   float: right;
   margin-right: 300px;
   margin-top: -25px;
 }
 
 #reservation_date {
-  // font-family: 'Shippori Mincho', serif;
+  font-family: 'Shippori Mincho', serif;
   float: left;
   margin-left: 120px;
   margin-top: 40px;
@@ -193,7 +340,7 @@ h2 {
 }
 
 #reservation_time {
-  // font-family: 'Shippori Mincho', serif;
+  font-family: 'Shippori Mincho', serif;
   float: left;
   margin-left: 130px;
   margin-top: 30px;
@@ -208,9 +355,8 @@ h2 {
 }
 
 #logo {
-  width: 150px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  width: 135px;
+  margin-top: -90px;
 }
 
 .yakiniku {
@@ -281,42 +427,53 @@ h2 {
   background-color: #eeeeee;
   max-width: 800px;
   height: 335px;
-  margin: 150px auto;
+  margin: 138px auto;
   border-radius: 2%;
+  font-family: 'Shippori Mincho', serif;
 }
 
 h3 {
   padding-top: 40px;
   text-align: center;
+  font-family: 'Shippori Mincho', serif;
 }
 
 .confirmation {
   margin-top: 30px;
   text-align: center;
+  font-family: 'Shippori Mincho', serif;
 }
 
 .cancel {
   margin-top: 30px;
   text-align: center;
+  font-family: 'Shippori Mincho', serif;
 }
 
 .restaurant_phone {
   margin-top: 30px;
   text-align: center;
+  font-family: 'Shippori Mincho', serif;
 }
 
-.button {
-  margin-top: 25px;
+.access {
+  margin-top: 30px;
   text-align: center;
 }
 
-#access {
-  background-color: #ff8856;
-  padding: 7px 40px;
-  font-size: 17px;
-  border-radius: 4%;
+a.link {
+  background-color: #fa9468;
+  text-decoration: none;
   color: white;
-  border: none;
+  font-size: 17px;
+  // display: block;
+  width: 110px;
+  padding: 10px 19px;
+  border-radius: 4%;
+}
+
+a.link:hover {
+  background-color: #fe814c;
 }
 
 @media screen and (max-width: 767px) {

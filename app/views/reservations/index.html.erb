@@ -1,4 +1,37 @@
 <header>
+  <!-- ハンバーガーメニュー部分 -->
+  <div class="drawer">
+    <!-- ハンバーガーメニューの表示・非表示を切り替えるチェックボックス -->
+    <input type="checkbox" id="drawer-check" class="drawer-hidden" />
+    <!-- ハンバーガーアイコン -->
+    <label for="drawer-check" class="drawer-open"><span></span></label>
+    <!-- メニュー -->
+    <nav class="drawer-content">
+      <ul class="drawer-list">
+        <li class="drawer-item" id="li_h">
+          <a href="/index.html" target="_blank">Home</a>
+        </li>
+        <!-- /.drawer-item -->
+        <li class="drawer-item" id="li_m">
+          <a href="/menu.html" target="_blank">Menu</a>
+        </li>
+        <!-- /.drawer-item -->
+        <li class="drawer-item" id="li_r">
+          <a href="/access.html" target="_blank">Access</a>
+        </li>
+        <!-- /.drawer-item -->
+        <li class="drawer-item" id="li_n">
+          <a href="/news.html" target="_blank">News</a>
+        </li>
+        <!-- /.drawer-item -->
+        <li class="drawer-item" id="li_i">
+          <a href="https://instagram.com/ushibudou?utm_medium=copy_link" target="_blank">Instagram</a>
+        </li>
+        <!-- /.drawer-item -->
+      </ul>
+      <!-- /.drawer-list -->
+    </nav>
+  </div>
   <img src="/assets/logo-white.png" alt="" id="logo">
 </header>
 <div class="container">
@@ -18,7 +51,7 @@
   </div>
   <label for="time-box" id="reservation_time">予約時間</label>
   <select name="start_time" id="time-box" required></select>
-  <div class="check">
+  <div class="modal-button">
     <button id="modal-button" disabled>予約へ進む</button>
   </div>
 </div>
