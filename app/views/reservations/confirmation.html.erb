@@ -1,17 +1,48 @@
 <header>
+  <!-- ハンバーガーメニュー部分 -->
+  <div class="drawer">
+    <!-- ハンバーガーメニューの表示・非表示を切り替えるチェックボックス -->
+    <input type="checkbox" id="drawer-check" class="drawer-hidden" />
+    <!-- ハンバーガーアイコン -->
+    <label for="drawer-check" class="drawer-open"><span></span></label>
+    <!-- メニュー -->
+    <nav class="drawer-content">
+      <ul class="drawer-list">
+        <li class="drawer-item" id="li_h">
+          <a href="/index.html" target="_blank">Home</a>
+        </li>
+        <!-- /.drawer-item -->
+        <li class="drawer-item" id="li_m">
+          <a href="/menu.html" target="_blank">Menu</a>
+        </li>
+        <!-- /.drawer-item -->
+        <li class="drawer-item" id="li_r">
+          <a href="/access.html" target="_blank">Access</a>
+        </li>
+        <!-- /.drawer-item -->
+        <li class="drawer-item" id="li_n">
+          <a href="/news.html" target="_blank">News</a>
+        </li>
+        <!-- /.drawer-item -->
+        <li class="drawer-item" id="li_i">
+          <a href="https://instagram.com/ushibudou?utm_medium=copy_link" target="_blank">Instagram</a>
+        </li>
+        <!-- /.drawer-item -->
+      </ul>
+      <!-- /.drawer-list -->
+    </nav>
+  </div>
   <img src="/assets/logo-white.png" alt="" id="logo">
 </header>
 <div class="confirmation_container">
-
   <h3>以下の内容で予約が確定しました</h3>
-    <div class="confirmation">
-      <%= flash[:notice] %>
-    </div>
-    <p class="cancel">ご予約をキャンセルされる場合は、お手数をおかけしますが、下記の電話番号までご連絡ください。</p>
-    <p class="restaurant_phone">TEL  :  06 - 6180 - 4249 </p>
-    <div class="button">
-      <button id="access">お店詳細</button>
-    </div>
+  <div class="confirmation">
+    <%= flash[:notice] %>
+  </div>
+  <p class="cancel">ご予約をキャンセルされる場合は、お手数をおかけしますが、下記の電話番号までご連絡ください。</p>
+  <p class="restaurant_phone">TEL&nbsp;:&nbsp;06&nbsp;-&nbsp;6180&nbsp;-&nbsp;4249 </p>
+  <div class="access">
+    <a href="#" class="link">お店詳細</a>
+  </div>
 </div>
-
 <footer><small>© 2021 Ushibudou</small></footer>
